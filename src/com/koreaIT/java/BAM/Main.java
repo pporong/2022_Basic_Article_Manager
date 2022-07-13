@@ -13,7 +13,7 @@ public class Main {
 		while (true) {
 
 			System.out.printf("명령어 : ");
-			String cmd = sc.nextLine();
+			String cmd = sc.nextLine().trim();
 
 			// 명령어 미입력시
 			if (cmd.length() == 0) {
@@ -38,10 +38,12 @@ public class Main {
 				lastArticleId = id;
 
 				System.out.printf("%d번 글이 생성되었습니다.\n", id);
+				
 
 			 } // 게시글 목록
 			  else if (cmd.equals("article list")) {
 				System.out.println("게시글이 없습니다.");
+				continue;
 			 } // 그 외
 			  else {
 				System.out.println("존재하지 않는 명령어 입니다. :(");
