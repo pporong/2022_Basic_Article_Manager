@@ -103,7 +103,7 @@ public class Main {
 
 				int id = Integer.parseInt(cmdBits[2]);
 
-				int foundIndex = 1;
+				int foundIndex = -1;
 				Article found = null;
 
 				for (int i = 0; i < articles.size(); i++) {
@@ -114,14 +114,14 @@ public class Main {
 					}
 				}
 				// 삭제 할 게시글이 없을때
-				if (foundIndex == 1) {
-					System.out.printf("%d번 게시글은 존재하지 않습니다.\n", found.id);
+				if (foundIndex == -1) {
+					System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
 					continue;
 				}
 				// 삭제 할 게시글이 있을때
 				articles.remove(foundIndex);
-				System.out.printf("%d번 게시글을 삭제했습니다.\n", found.id);
-				break;
+				System.out.printf("%d번 게시글을 삭제했습니다.\n", id);
+				continue;
 			}
 			// 그 외
 			else {
