@@ -54,7 +54,7 @@ public class Main {
 					System.out.println("게시글이 없습니다.");
 					continue;
 				}
-				System.out.println("번호     | 제목");
+				System.out.println(" *번호*  |   *제목*");
 				for (int i = articles.size() - 1; i >= 0; i--) {
 					Article article = articles.get(i);
 					System.out.printf("번호 : %d | 제목 : %s\n", article.id, article.title);
@@ -71,26 +71,58 @@ public class Main {
 
 				int id = Integer.parseInt(cmdBits[2]);
 
-				boolean foundArticle = false;
+				Article foundArticle = null;
 
 				for (int i = 0; i < articles.size(); i++) {
 					// 0,1,2,3,4 ```
 					Article article = articles.get(i);
-					
+
 					if (article.id == id) {
-						foundArticle = true;
-						System.out.println("%d번 게시글");
+						foundArticle = article;
+						
+						// 상세보기 할 게시글이 있을 때
+						System.out.printf("번호 : %d번 \n", foundArticle.id);
+						System.out.printf("날짜 :  \n");
+						System.out.printf("제목 : %s \n", foundArticle.title);
+						System.out.printf("내용 : %s \n", foundArticle.body);
+						break;
 					}
 
 				}
-
-				if (foundArticle == false) {
+				// 상세보기 할 게시글이 없을 때
+				if (foundArticle == null) {
 					System.out.printf("%d번 게시글은 존재하지 않습니다. \n", id);
 					continue;
 				}
 
 			}
+			// 게시글 삭제
+			else if (cmd.startsWith("article delete ")) {
 
+				String[] cmdBits = cmd.split(" ");
+
+				int id = Integer.parseInt(cmdBits[2]);
+
+				int foundIndex = 1;
+				Article found = null;
+
+				for (int i = 0; i < articles.size(); i++) {
+					Article article = articles.get(i);
+
+					if (article.id == id) {
+						foundIndex = i;
+					}
+				}
+				// 삭제 할 게시글이 없을때
+				if (foundIndex == 1) {
+					System.out.printf("%d번 게시글은 존재하지 않습니다.\n", found.id);
+					continue;
+				}
+				// 삭제 할 게시글이 있을때
+				articles.remove(foundIndex);
+				System.out.printf("%d번 게시글을 삭제했습니다.\n", found.id);
+				break;
+			}
 			// 그 외
 			else {
 				System.out.println("존재하지 않는 명령어 입니다. :(");
