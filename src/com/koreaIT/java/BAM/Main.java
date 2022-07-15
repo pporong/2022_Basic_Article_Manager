@@ -1,6 +1,5 @@
 package com.koreaIT.java.BAM;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,8 +13,7 @@ public class Main {
 		int lastArticleId = 0;
 
 		List<Article> articles = new ArrayList<>();
-		LocalDateTime regDateTime = LocalDateTime.now();
-//		regDateTime formatter = regDateTimeFormatter.ofPattern("yyyy-mm-dd HH:mm:ss");
+//		LocalDateTime regDate = LocalDateTime.now();
 
 		while (true) {
 
@@ -38,26 +36,32 @@ public class Main {
 				int id = lastArticleId + 1;
 				lastArticleId = id;
 
+				System.out.println("< 게시글 작성 >");
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
+//				System.out.printf("작성자 : ");
+//				String writer = sc.nextLine();
+//				System.out.println(DateTime.regDate);
+				String regDate = Util.getNowDateStr();
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
 
-				Article article = new Article(id, title, body);
+				Article article = new Article(id, regDate, title, body);
 				articles.add(article);
 
-				System.out.printf("%d번 글이 생성되었습니다.\n", id);
+				System.out.printf("%d번 글이 등록되었습니다. :)\n", id);
 			}
 			// 게시글 목록
 			else if (cmd.equals("article list")) {
 				if (articles.size() == 0) {
-					System.out.println("게시글이 없습니다.");
+					System.out.println("게시글이 없습니다. :(");
 					continue;
 				}
-				System.out.println(" *번호*  |   *제목*");
+				System.out.println("* 번호  /       작성일       /  제목 *");
 				for (int i = articles.size() - 1; i >= 0; i--) {
 					Article article = articles.get(i);
-					System.out.printf("번호 : %d | 제목 : %s\n", article.id, article.title);
+					System.out.printf(" %d번 | %s | %s \n", 
+							article.id, article.regDate, article.title);
 				}
 
 			}
@@ -79,23 +83,45 @@ public class Main {
 
 					if (article.id == id) {
 						foundArticle = article;
-						
+
 						// 상세보기 할 게시글이 있을 때
-						System.out.printf("번호 : %d번 \n", foundArticle.id);
-						System.out.printf("날짜 :  \n");
-						System.out.printf("제목 : %s \n", foundArticle.title);
-						System.out.printf("내용 : %s \n", foundArticle.body);
+						System.out.printf("[ %d번 게시글에 대한 정보입니다. ]\n", foundArticle.id);
+						System.out.printf("* 번호 : %d번 \n", foundArticle.id);
+//						System.out.printf("* 작성자 : %s \n", foundArticle.writer);
+						System.out.printf("* 날짜 : %s \n", foundArticle.regDate);
+						System.out.printf("* 제목 : %s \n", foundArticle.title);
+						System.out.printf("* 내용 : %s \n", foundArticle.body);
 						break;
 					}
 
 				}
 				// 상세보기 할 게시글이 없을 때
 				if (foundArticle == null) {
-					System.out.printf("%d번 게시글은 존재하지 않습니다. \n", id);
+					System.out.printf("%d번 게시글은 존재하지 않습니다. :( \n", id);
 					continue;
 				}
 
 			}
+			// 게시글 수정
+			else if (cmd.startsWith("article modify ")) {
+
+				String[] cmdBits = cmd.split(" ");
+
+				int id = Integer.parseInt(cmdBits[2]);
+
+				Article foundArticle = null;
+
+				for (int i = 0; i < articles.size(); i++) {
+					Article article = articles.get(i);
+
+					if (article.id == id) {
+						foundArticle = article;
+
+					}
+				}
+
+			}
+
 			// 게시글 삭제
 			else if (cmd.startsWith("article delete ")) {
 
@@ -104,28 +130,34 @@ public class Main {
 				int id = Integer.parseInt(cmdBits[2]);
 
 				int foundIndex = -1;
-				Article found = null;
+				Article foundArticle = null;
 
 				for (int i = 0; i < articles.size(); i++) {
 					Article article = articles.get(i);
 
+					// size() : 3
+					// index : 0 1 2
+					// id : 1 2 3
 					if (article.id == id) {
 						foundIndex = i;
+						
+						// 삭제 할 게시글이 있을때
+						articles.remove(foundIndex);
+						System.out.printf("%d번 게시글을 삭제했습니다. :) \n", id);
+						continue;
 					}
 				}
 				// 삭제 할 게시글이 없을때
 				if (foundIndex == -1) {
-					System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
+					System.out.printf("%d번 게시글은 존재하지 않습니다. :( \n", id);
+					System.out.println("다시 한 번 확인해 주세요.");
 					continue;
 				}
-				// 삭제 할 게시글이 있을때
-				articles.remove(foundIndex);
-				System.out.printf("%d번 게시글을 삭제했습니다.\n", id);
-				continue;
+
 			}
 			// 그 외
 			else {
-				System.out.println("존재하지 않는 명령어 입니다. :(");
+				System.out.println("!! 존재하지 않는 명령어 입니다. !! \n");
 			}
 
 		}
@@ -141,11 +173,17 @@ class Article {
 	int id;
 	String title;
 	String body;
+//	String writer;
+	String regDate;
 
-	public Article(int id, String title, String body) {
+	public Article(int id, String regDate, String title, String body) {
 		this.id = id;
+		this.regDate = regDate;
 		this.title = title;
 		this.body = body;
+//		this.writer = writer;
+		
 	}
 
 }
+
