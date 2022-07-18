@@ -116,8 +116,30 @@ public class Main {
 
 					if (article.id == id) {
 						foundArticle = article;
-
+						
+						// 수정 할 게시글이 있을 때
+						System.out.printf("[ %d번 게시글에 대한 정보입니다. ] \n", foundArticle.id);
+						System.out.printf("* 현재 %d번 게시글 제목 : %s \n", foundArticle.id, foundArticle.title);
+						System.out.println("수정 할 제목을 입력 해 주세요.");
+						System.out.printf("-> 제목 : ");
+						String title = sc.nextLine();
+						System.out.printf("* 현재 %d번 게시글 내용 : %s \n", foundArticle.id, foundArticle.body);
+						System.out.println("수정 할 내용을 입력 해 주세요.");
+						System.out.printf("*-> 내용 : ");
+						String body = sc.nextLine();
+						
+						// 덮어쓰기
+						foundArticle.title = title;
+						foundArticle.body = body;
+						
+						System.out.printf("%d번 게시물 수정이 완료되었습니다 :) \n", foundArticle.id);
+						break;
 					}
+				}
+				// 수정 할 게시글이 없을 때
+				if (foundArticle == null) {
+					System.out.printf("%d번 게시글은 존재하지 않습니다. :( \n", id);
+					continue;
 				}
 
 			}
