@@ -1,4 +1,4 @@
-package com.koreaIT.java.BAM;
+package com.koreaIT.java.BAM.util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
