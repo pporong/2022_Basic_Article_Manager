@@ -57,11 +57,11 @@ public class Main {
 					System.out.println("게시글이 없습니다. :(");
 					continue;
 				}
-				System.out.println("* 번호  /       작성일       /  제목 *");
+				System.out.println("* 번호  | 조회수 |        작성일        |  제목  *");
 				for (int i = articles.size() - 1; i >= 0; i--) {
 					Article article = articles.get(i);
-					System.out.printf(" %d번 | %s | %s \n", 
-							article.id, article.regDate, article.title);
+					System.out.printf("  %d번   |  %d  | %s | %s \n", 
+							article.id, article.hit, article.regDate, article.title);
 				}
 
 			}
@@ -84,9 +84,12 @@ public class Main {
 					if (article.id == id) {
 						foundArticle = article;
 
+						foundArticle.increaseHit();
+						
 						// 상세보기 할 게시글이 있을 때
 						System.out.printf("[ %d번 게시글에 대한 정보입니다. ]\n", foundArticle.id);
 						System.out.printf("* 번호 : %d번 \n", foundArticle.id);
+						System.out.printf("* 조회 : %d번 \n", foundArticle.hit);
 //						System.out.printf("* 작성자 : %s \n", foundArticle.writer);
 						System.out.printf("* 날짜 : %s \n", foundArticle.regDate);
 						System.out.printf("* 제목 : %s \n", foundArticle.title);
@@ -197,6 +200,8 @@ class Article {
 	String body;
 //	String writer;
 	String regDate;
+	// 조회수
+	int hit;
 
 	public Article(int id, String regDate, String title, String body) {
 		this.id = id;
@@ -204,7 +209,12 @@ class Article {
 		this.title = title;
 		this.body = body;
 //		this.writer = writer;
+		this.hit = 0;
 		
+	}
+	
+	public void increaseHit() {
+		hit ++;
 	}
 
 }
