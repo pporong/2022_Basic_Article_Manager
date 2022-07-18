@@ -5,14 +5,22 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+	
+	private static List<Article> articles;
+	
+	static {
+		articles = new ArrayList<>();
+	}
 
 	public static void main(String[] args) {
 		System.out.println("== 프로그램 시작 ==");
-
+		
+		makeTestData();
 		Scanner sc = new Scanner(System.in);
-		int lastArticleId = 0;
+//		int lastArticleId = 0;
+		
 
-		List<Article> articles = new ArrayList<>();
+//		List<Article> articles = new ArrayList<>();
 //		LocalDateTime regDate = LocalDateTime.now();
 
 		while (true) {
@@ -33,15 +41,11 @@ public class Main {
 
 			// 게시글 작성 메서드
 			if (cmd.equals("article write")) {
-				int id = lastArticleId + 1;
-				lastArticleId = id;
-
+				int id = articles.size() + 1;
+				
 				System.out.println("< 게시글 작성 >");
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
-//				System.out.printf("작성자 : ");
-//				String writer = sc.nextLine();
-//				System.out.println(DateTime.regDate);
 				String regDate = Util.getNowDateStr();
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
@@ -57,10 +61,10 @@ public class Main {
 					System.out.println("게시글이 없습니다. :(");
 					continue;
 				}
-				System.out.println("* 번호  | 조회수 |        작성일        |  제목  *");
+				System.out.println("* 번호 | 조회수 |        작성일         |  제목  *");
 				for (int i = articles.size() - 1; i >= 0; i--) {
 					Article article = articles.get(i);
-					System.out.printf("  %d번   |  %d  | %s | %s \n", 
+					System.out.printf("  %d번  |  %d  | %s | %s \n", 
 							article.id, article.hit, article.regDate, article.title);
 				}
 
@@ -90,7 +94,6 @@ public class Main {
 						System.out.printf("[ %d번 게시글에 대한 정보입니다. ]\n", foundArticle.id);
 						System.out.printf("* 번호 : %d번 \n", foundArticle.id);
 						System.out.printf("* 조회 : %d번 \n", foundArticle.hit);
-//						System.out.printf("* 작성자 : %s \n", foundArticle.writer);
 						System.out.printf("* 날짜 : %s \n", foundArticle.regDate);
 						System.out.printf("* 제목 : %s \n", foundArticle.title);
 						System.out.printf("* 내용 : %s \n", foundArticle.body);
@@ -155,7 +158,7 @@ public class Main {
 				int id = Integer.parseInt(cmdBits[2]);
 
 				int foundIndex = -1;
-				Article foundArticle = null;
+//				Article foundArticle = null;
 
 				for (int i = 0; i < articles.size(); i++) {
 					Article article = articles.get(i);
@@ -191,6 +194,16 @@ public class Main {
 		sc.close();
 
 	}
+	
+	// 테스트 데이터 생성
+	private static void makeTestData() {
+		
+		System.out.println("테스트를 위한 데이터를 생성합니다.");
+		
+		articles.add(new Article(1, Util.getNowDateStr(), "제목1", "내용1", 11));
+		articles.add(new Article(2, Util.getNowDateStr(), "제목2", "내용2", 22));
+		articles.add(new Article(3, Util.getNowDateStr(), "제목2", "내용2", 33));
+	}
 
 }
 
@@ -198,18 +211,22 @@ class Article {
 	int id;
 	String title;
 	String body;
-//	String writer;
 	String regDate;
 	// 조회수
 	int hit;
-
+	
 	public Article(int id, String regDate, String title, String body) {
+		this(id, regDate, title, body, 0);
+	}
+	
+
+	// 인자, 매개변수
+	public Article(int id, String regDate, String title, String body, int hit) {
 		this.id = id;
 		this.regDate = regDate;
 		this.title = title;
 		this.body = body;
-//		this.writer = writer;
-		this.hit = 0;
+		this.hit = hit;
 		
 	}
 	
