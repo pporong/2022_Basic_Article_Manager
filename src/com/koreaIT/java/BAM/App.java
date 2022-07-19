@@ -27,18 +27,18 @@ public class App {
 			System.out.printf("명령어 : ");
 			String cmd = sc.nextLine().trim();
 
-			// 명령어 미입력시
+			/* 명령어 미입력시 */
 			if (cmd.length() == 0) {
 				System.out.println("!! 명령어를 입력 해 주세요 !!");
 				continue;
 			}
 
-			// 종료시
+			/* 종료시 */
 			if (cmd.equals("exit")) {
 				break;
 			}
 
-			// 게시글 작성 메서드
+			/* 게시글 작성 메서드 */
 			if (cmd.equals("article write")) {
 				int id = articles.size() + 1;
 
@@ -54,27 +54,49 @@ public class App {
 
 				System.out.printf("%d번 글이 등록되었습니다. :)\n", id);
 			}
-			// 게시글 목록
-			else if (cmd.equals("article list")) {
+			/* 게시글 목록 */
+			else if (cmd.startsWith("article list")) {
 				if (articles.size() == 0) {
+					// 게시글 없을 경우
 					System.out.println("게시글이 없습니다. :(");
 					continue;
 				}
-				System.out.println("* 번호 | 조회수 |        작성일         |  제목  *");
-				for (int i = articles.size() - 1; i >= 0; i--) {
-					Article article = articles.get(i);
+
+				String searchKeyword = cmd.substring("article list".length()).trim();
+				System.out.printf("검색어 : '%s' (이)가 포함된 결과입니다. \n", searchKeyword);
+
+				List<Article> forPrintArticles = articles;
+
+				if (searchKeyword.length() > 0) {
+					forPrintArticles = new ArrayList<>();
+
+					for (Article article : articles) {
+						if (article.title.contains(searchKeyword)) {
+							forPrintArticles.add(article);
+						}
+					}
+					if (forPrintArticles.size() == 0) {
+						System.out.println("해당 검색어를 포함하는 게시글이 없습니다. :( ");
+						continue;
+					}
+				}
+
+				System.out.println("* 번호  | 조회수 |        작성일         |  제목  *");
+				// 역순으로 정렬
+				for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
+					Article article = forPrintArticles.get(i);
 					System.out.printf("  %d번  |  %d  | %s | %s \n", article.id, article.hit, article.regDate,
 							article.title);
 				}
 
 			}
-			// 게시글 상세보기
+			/* 게시글 상세보기 */
 			else if (cmd.startsWith("article detail ")) {
 
 				String[] cmdBits = cmd.split(" ");
-				// cmdBits[0]; -> article
-				// cmdBits[1]; -> detail
-				// cmdBits[2]; -> ~
+//				 cmdBits[0]; -> article
+//				 cmdBits[1]; -> detail
+//				 cmdBits[2]; -> ~
 
 				int id = Integer.parseInt(cmdBits[2]);
 
@@ -97,7 +119,7 @@ public class App {
 				System.out.printf("* 내용 : %s \n", foundArticle.body);
 
 			}
-			// 게시글 수정
+			/* 게시글 수정 */
 			else if (cmd.startsWith("article modify ")) {
 
 				String[] cmdBits = cmd.split(" ");
@@ -132,7 +154,7 @@ public class App {
 
 			}
 
-			// 게시글 삭제
+			/* 게시글 삭제 */
 			else if (cmd.startsWith("article delete ")) {
 
 				String[] cmdBits = cmd.split(" ");
@@ -154,7 +176,7 @@ public class App {
 				continue;
 
 			}
-			// 그 외
+			/* 그 외 */
 			else {
 				System.out.println("!! 존재하지 않는 명령어 입니다. !! \n");
 			}
@@ -166,8 +188,7 @@ public class App {
 
 	}
 
-
-	// 중복제거 (delete)
+	/* 중복제거 (delete) */
 	private int getArticleIndexById(int id) {
 
 		int i = 0;
@@ -180,8 +201,8 @@ public class App {
 		}
 		return -1;
 	}
-	
-	// 중복제거 (detail, modify)
+
+	/* 중복제거 (detail, modify) */
 	private Article getArticleById(int id) {
 
 		int index = getArticleIndexById(id);
@@ -192,7 +213,7 @@ public class App {
 		return null;
 	}
 
-	// 테스트 데이터 생성
+	/* 테스트 데이터 생성 */
 	private void makeTestData() {
 
 		System.out.println("테스트를 위한 데이터를 생성합니다.");
