@@ -35,6 +35,7 @@ public class App {
 
 			/* 종료시 */
 			if (cmd.equals("exit")) {
+				System.out.println("프로그램을 종료합니다.");
 				break;
 			}
 
@@ -63,16 +64,17 @@ public class App {
 				}
 
 				String searchKeyword = cmd.substring("article list".length()).trim();
-				System.out.printf("검색어 : '%s' (이)가 포함된 결과입니다. \n", searchKeyword);
+				
 
 				List<Article> forPrintArticles = articles;
 
 				if (searchKeyword.length() > 0) {
-					forPrintArticles = new ArrayList<>();
-
+					forPrintArticles = new ArrayList<>();					
+					
 					for (Article article : articles) {
 						if (article.title.contains(searchKeyword)) {
 							forPrintArticles.add(article);
+							System.out.printf("검색어 : '%s' (이)가 포함된 결과입니다. \n", searchKeyword);
 						}
 					}
 					if (forPrintArticles.size() == 0) {
