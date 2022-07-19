@@ -78,33 +78,23 @@ public class App {
 
 				int id = Integer.parseInt(cmdBits[2]);
 
-				Article foundArticle = null;
+				Article foundArticle = getArticleById(id);
 
-				for (int i = 0; i < articles.size(); i++) {
-					// 0,1,2,3,4 ```
-					Article article = articles.get(i);
-
-					if (article.id == id) {
-						foundArticle = article;
-
-						foundArticle.increaseHit();
-
-						// 상세보기 할 게시글이 있을 때
-						System.out.printf("[ %d번 게시글에 대한 정보입니다. ]\n", foundArticle.id);
-						System.out.printf("* 번호 : %d번 \n", foundArticle.id);
-						System.out.printf("* 조회 : %d번 \n", foundArticle.hit);
-						System.out.printf("* 날짜 : %s \n", foundArticle.regDate);
-						System.out.printf("* 제목 : %s \n", foundArticle.title);
-						System.out.printf("* 내용 : %s \n", foundArticle.body);
-						break;
-					}
-
-				}
 				// 상세보기 할 게시글이 없을 때
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시글은 존재하지 않습니다. :( \n", id);
 					continue;
 				}
+
+				foundArticle.increaseHit();
+
+				// 상세보기 할 게시글이 있을 때
+				System.out.printf("[ %d번 게시글에 대한 정보입니다. ]\n", foundArticle.id);
+				System.out.printf("* 번호 : %d번 \n", foundArticle.id);
+				System.out.printf("* 조회 : %d번 \n", foundArticle.hit);
+				System.out.printf("* 날짜 : %s \n", foundArticle.regDate);
+				System.out.printf("* 제목 : %s \n", foundArticle.title);
+				System.out.printf("* 내용 : %s \n", foundArticle.body);
 
 			}
 			// 게시글 수정
@@ -114,38 +104,31 @@ public class App {
 
 				int id = Integer.parseInt(cmdBits[2]);
 
-				Article foundArticle = null;
+				Article foundArticle = getArticleById(id);
 
-				for (int i = 0; i < articles.size(); i++) {
-					Article article = articles.get(i);
-
-					if (article.id == id) {
-						foundArticle = article;
-
-						// 수정 할 게시글이 있을 때
-						System.out.printf("[ %d번 게시글에 대한 정보입니다. ] \n", foundArticle.id);
-						System.out.printf("* 현재 %d번 게시글 제목 : %s \n", foundArticle.id, foundArticle.title);
-						System.out.println("수정 할 제목을 입력 해 주세요.");
-						System.out.printf("-> 제목 : ");
-						String title = sc.nextLine();
-						System.out.printf("* 현재 %d번 게시글 내용 : %s \n", foundArticle.id, foundArticle.body);
-						System.out.println("수정 할 내용을 입력 해 주세요.");
-						System.out.printf("*-> 내용 : ");
-						String body = sc.nextLine();
-
-						// 덮어쓰기
-						foundArticle.title = title;
-						foundArticle.body = body;
-
-						System.out.printf("%d번 게시물 수정이 완료되었습니다 :) \n", foundArticle.id);
-						break;
-					}
-				}
 				// 수정 할 게시글이 없을 때
 				if (foundArticle == null) {
 					System.out.printf("%d번 게시글은 존재하지 않습니다. :( \n", id);
 					continue;
 				}
+
+				// 수정 할 게시글이 있을 때
+				System.out.printf("[ %d번 게시글에 대한 정보입니다. ] \n", foundArticle.id);
+				System.out.printf("* 현재 %d번 게시글 제목 : %s \n", foundArticle.id, foundArticle.title);
+				System.out.println("수정 할 제목을 입력 해 주세요.");
+				System.out.printf("-> 제목 : ");
+				String title = sc.nextLine();
+				System.out.printf("* 현재 %d번 게시글 내용 : %s \n", foundArticle.id, foundArticle.body);
+				System.out.println("수정 할 내용을 입력 해 주세요.");
+				System.out.printf("*-> 내용 : ");
+				String body = sc.nextLine();
+
+				// 덮어쓰기
+				foundArticle.title = title;
+				foundArticle.body = body;
+
+				System.out.printf("%d번 게시물 수정이 완료되었습니다 :) \n", foundArticle.id);
+				break;
 
 			}
 
@@ -156,30 +139,19 @@ public class App {
 
 				int id = Integer.parseInt(cmdBits[2]);
 
-				int foundIndex = -1;
-//					Article foundArticle = null;
+				int foundIndex = getArticleIndexById(id);
 
-				for (int i = 0; i < articles.size(); i++) {
-					Article article = articles.get(i);
-
-					// size() : 3
-					// index : 0 1 2
-					// id : 1 2 3
-					if (article.id == id) {
-						foundIndex = i;
-
-						// 삭제 할 게시글이 있을때
-						articles.remove(foundIndex);
-						System.out.printf("%d번 게시글을 삭제했습니다. :) \n", id);
-						continue;
-					}
-				}
 				// 삭제 할 게시글이 없을때
 				if (foundIndex == -1) {
 					System.out.printf("%d번 게시글은 존재하지 않습니다. :( \n", id);
 					System.out.println("다시 한 번 확인해 주세요.");
 					continue;
 				}
+
+				// 삭제 할 게시글이 있을때
+				articles.remove(foundIndex);
+				System.out.printf("%d번 게시글을 삭제했습니다. :) \n", id);
+				continue;
 
 			}
 			// 그 외
@@ -194,23 +166,30 @@ public class App {
 
 	}
 
-	private Article getArticleById(int id) {
+
+	// 중복제거 (delete)
+	private int getArticleIndexById(int id) {
 
 		int i = 0;
-		
-		
-		
-		for (int i = 0; i < articles.size(); i++) {
-			Article article = articles.get(i);
 
+		for (Article article : articles) {
 			if (article.id == id) {
-				foundArticle = article;
-
+				return i;
 			}
-
-			return null;
+			i++;
 		}
+		return -1;
+	}
+	
+	// 중복제거 (detail, modify)
+	private Article getArticleById(int id) {
 
+		int index = getArticleIndexById(id);
+
+		if (index != -1) {
+			return articles.get(index);
+		}
+		return null;
 	}
 
 	// 테스트 데이터 생성
