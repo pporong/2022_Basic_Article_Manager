@@ -1,6 +1,6 @@
 package com.koreaIT.java.BAM.dto;
 
-public class Article {
+public class Article extends Dto {
 	public int id;
 	public String title;
 	public String body;

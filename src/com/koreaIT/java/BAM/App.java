@@ -5,14 +5,17 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.java.BAM.dto.Article;
+import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.util.Util;
 
 public class App {
 
 	private List<Article> articles;
+	private List<Member> members;
 
 	public App() {
 		articles = new ArrayList<>();
+		members = new ArrayList<>();
 	}
 
 	public void run() {
@@ -20,6 +23,7 @@ public class App {
 		System.out.println("== 프로그램 시작 ==");
 
 		makeTestData();
+		
 		Scanner sc = new Scanner(System.in);
 
 		while (true) {
@@ -39,6 +43,27 @@ public class App {
 				break;
 			}
 
+			/* 회원가입 기능 구현 */
+			if (cmd.equals("member join")) {
+				int id = members.size() + 1;
+				String regDate = Util.getNowDateStr();
+				System.out.println("< 회원가입 >");
+				System.out.printf("* 아이디 : ");
+				String loginId = sc.nextLine();
+				System.out.printf("* 비밀번호 : ");
+				String loginPw = sc.nextLine();
+				System.out.printf("* 비밀번호 확인 : ");
+				String loginPwConfirm = sc.nextLine();
+				System.out.printf("이름 : ");
+				String userName = sc.nextLine();
+				Member member = new Member(id, regDate, loginId, loginPw, userName);
+				members.add(member);
+				
+				System.out.printf("%s 님! 회원가입이 완료되었습니다! 환영합니다 ! :) \n", userName);
+				continue;
+			}
+			
+			
 			/* 게시글 작성 메서드 */
 			if (cmd.equals("article write")) {
 				int id = articles.size() + 1;
