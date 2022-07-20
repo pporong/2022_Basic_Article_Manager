@@ -47,16 +47,46 @@ public class App {
 			if (cmd.equals("member join")) {
 				int id = members.size() + 1;
 				String regDate = Util.getNowDateStr();
+				
+				// 회원가입
 				System.out.println("< 회원가입 >");
-				System.out.printf("* 아이디 : ");
-				String loginId = sc.nextLine();
-				System.out.printf("* 비밀번호 : ");
-				String loginPw = sc.nextLine();
-				System.out.printf("* 비밀번호 확인 : ");
-				String loginPwConfirm = sc.nextLine();
-				System.out.printf("이름 : ");
+				System.out.printf("* 이름 : ");
 				String userName = sc.nextLine();
-				Member member = new Member(id, regDate, loginId, loginPw, userName);
+				
+				String loginId = null;
+				
+				// 회원가입 중 아이디 중복체크 
+				while (true) {
+					System.out.printf("* 아이디 : ");
+					loginId = sc.nextLine();
+					
+					if (isJoinableLoginId(loginId) == false) {
+						System.out.printf("!! %s (은)는 이미 사용중인 아이디입니다.", loginId);
+						System.out.println(" 다시 입력 해 주세요. !!");
+						continue;
+					}
+					break;
+				}
+				
+				
+				String loginPw = null;
+				String loginPwConfirm = null;
+				
+				// 회원가입 중 비밀번호 확인
+				while (true) {
+					System.out.printf("* 비밀번호 : ");
+					loginPw = sc.nextLine();
+					System.out.printf("* 비밀번호 확인 : ");
+					loginPwConfirm = sc.nextLine();			
+						// 일치 X
+					if (loginPw.equals(loginPwConfirm) == false) {
+						System.out.println("!! 비밀번호가 일치하지 않습니다. 다시 입력 해 주세요. !!");
+						continue;
+					}
+					break;
+				}
+				
+				Member member = new Member(id, userName, regDate, loginId, loginPw);
 				members.add(member);
 				
 				System.out.printf("%s 님! 회원가입이 완료되었습니다! 환영합니다 ! :) \n", userName);
@@ -215,9 +245,47 @@ public class App {
 
 	}
 
-	/* 중복제거 (delete) */
-	private int getArticleIndexById(int id) {
+	
+	/* 로그인 아이디 중복체크 */
+	private boolean isJoinableLoginId(String loginId) {
+		
+		int index = getMemberIndexByLoginId(loginId);
+		
+		// -1 = 0 = '없다'의 의미
+		if (index == -1) {
+			return true;
+		}		
+		return false;
+	}
 
+	/* 로그인 아이디 인덱스 중복체크 */
+	private int getMemberIndexByLoginId(String loginId) {
+		
+		int i = 0;
+		
+		for (Member member : members) {
+			if (member.loginId.equals(loginId)) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+	
+	/* Article ArrayList 순회 로직 중복제거 (detail, modify) */
+	private Article getArticleById(int id) {
+
+		int index = getArticleIndexById(id);
+
+		if (index != -1) {
+			return articles.get(index);
+		}
+		return null;
+	}
+
+	/* Article ArrayList 순회 로직 중복제거 (delete) */
+	private int getArticleIndexById(int id) {
+		
 		int i = 0;
 
 		for (Article article : articles) {
@@ -229,16 +297,6 @@ public class App {
 		return -1;
 	}
 
-	/* 중복제거 (detail, modify) */
-	private Article getArticleById(int id) {
-
-		int index = getArticleIndexById(id);
-
-		if (index != -1) {
-			return articles.get(index);
-		}
-		return null;
-	}
 
 	/* 테스트 데이터 생성 */
 	private void makeTestData() {
