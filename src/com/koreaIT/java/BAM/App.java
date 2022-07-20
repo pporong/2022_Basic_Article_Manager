@@ -51,33 +51,39 @@ public class App {
 				// 회원가입
 				System.out.println("< 회원가입 >");
 				System.out.printf("* 이름 : ");
-				String userName = sc.nextLine();
+				String userName = sc.nextLine().trim();
 				
+				// 아이디
 				String loginId = null;
-				
 				// 회원가입 중 아이디 중복체크 
 				while (true) {
 					System.out.printf("* 아이디 : ");
-					loginId = sc.nextLine();
-					
+					loginId = sc.nextLine().trim();
+						// 중복 O
 					if (isJoinableLoginId(loginId) == false) {
 						System.out.printf("!! %s (은)는 이미 사용중인 아이디입니다.", loginId);
 						System.out.println(" 다시 입력 해 주세요. !!");
 						continue;
 					}
+					
+					// 아이디 조건
+					if (loginId.length() < 3) {
+						System.out.println("!! 아이디는 3글자 이상 입력해야 합니다. !!");
+						continue;
+					}
+					
 					break;
 				}
 				
-				
+				// 비밀번호
 				String loginPw = null;
 				String loginPwConfirm = null;
-				
 				// 회원가입 중 비밀번호 확인
 				while (true) {
 					System.out.printf("* 비밀번호 : ");
-					loginPw = sc.nextLine();
+					loginPw = sc.nextLine().trim();
 					System.out.printf("* 비밀번호 확인 : ");
-					loginPwConfirm = sc.nextLine();			
+					loginPwConfirm = sc.nextLine().trim();			
 						// 일치 X
 					if (loginPw.equals(loginPwConfirm) == false) {
 						System.out.println("!! 비밀번호가 일치하지 않습니다. 다시 입력 해 주세요. !!");
@@ -89,7 +95,8 @@ public class App {
 				Member member = new Member(id, userName, regDate, loginId, loginPw);
 				members.add(member);
 				
-				System.out.printf("%s 님! 회원가입이 완료되었습니다! 환영합니다 ! :) \n", userName);
+//				System.out.println("환영합니다, " + id + "번 째" + userName +" 회원님 !");
+				System.out.println(userName + " 님! 회원가입이 완료되었습니다! 환영합니다! :) \n");
 				continue;
 			}
 			
