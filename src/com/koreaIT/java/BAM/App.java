@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.koreaIT.java.BAM.controller.ArticleController;
+import com.koreaIT.java.BAM.controller.MemberController;
 import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.util.Util;
@@ -23,8 +25,11 @@ public class App {
 		System.out.println("== 프로그램 시작 ==");
 
 		makeTestData();
-		
+
 		Scanner sc = new Scanner(System.in);
+
+		MemberController memberController = new MemberController(sc, members);
+		ArticleController articleController = new ArticleController();
 
 		while (true) {
 
@@ -37,70 +42,17 @@ public class App {
 				continue;
 			}
 
+			/* 회원가입시 */
+			if (cmd.equals("member join")) {
+				memberController.doJoin();
+			}
+
 			/* 종료시 */
 			if (cmd.equals("exit")) {
 				System.out.println("프로그램을 종료합니다.");
 				break;
 			}
 
-			/* 회원가입 기능 구현 */
-			if (cmd.equals("member join")) {
-				int id = members.size() + 1;
-				String regDate = Util.getNowDateStr();
-				
-				// 회원가입
-				System.out.println("< 회원가입 >");
-				System.out.printf("* 이름 : ");
-				String userName = sc.nextLine().trim();
-				
-				// 아이디
-				String loginId = null;
-				// 회원가입 중 아이디 중복체크 
-				while (true) {
-					System.out.printf("* 아이디 : ");
-					loginId = sc.nextLine().trim();
-						// 중복 O
-					if (isJoinableLoginId(loginId) == false) {
-						System.out.printf("!! %s (은)는 이미 사용중인 아이디입니다.", loginId);
-						System.out.println(" 다시 입력 해 주세요. !!");
-						continue;
-					}
-					
-					// 아이디 조건
-					if (loginId.length() < 3) {
-						System.out.println("!! 아이디는 3글자 이상 입력해야 합니다. !!");
-						continue;
-					}
-					
-					break;
-				}
-				
-				// 비밀번호
-				String loginPw = null;
-				String loginPwConfirm = null;
-				// 회원가입 중 비밀번호 확인
-				while (true) {
-					System.out.printf("* 비밀번호 : ");
-					loginPw = sc.nextLine().trim();
-					System.out.printf("* 비밀번호 확인 : ");
-					loginPwConfirm = sc.nextLine().trim();			
-						// 일치 X
-					if (loginPw.equals(loginPwConfirm) == false) {
-						System.out.println("!! 비밀번호가 일치하지 않습니다. 다시 입력 해 주세요. !!");
-						continue;
-					}
-					break;
-				}
-				
-				Member member = new Member(id, userName, regDate, loginId, loginPw);
-				members.add(member);
-				
-//				System.out.println("환영합니다, " + id + "번 째" + userName +" 회원님 !");
-				System.out.println(userName + " 님! 회원가입이 완료되었습니다! 환영합니다! :) \n");
-				continue;
-			}
-			
-			
 			/* 게시글 작성 메서드 */
 			if (cmd.equals("article write")) {
 				int id = articles.size() + 1;
@@ -126,13 +78,12 @@ public class App {
 				}
 
 				String searchKeyword = cmd.substring("article list".length()).trim();
-				
 
 				List<Article> forPrintArticles = articles;
 
 				if (searchKeyword.length() > 0) {
-					forPrintArticles = new ArrayList<>();					
-					
+					forPrintArticles = new ArrayList<>();
+
 					for (Article article : articles) {
 						if (article.title.contains(searchKeyword)) {
 							forPrintArticles.add(article);
@@ -253,32 +204,6 @@ public class App {
 	}
 
 	
-	/* 로그인 아이디 중복체크 */
-	private boolean isJoinableLoginId(String loginId) {
-		
-		int index = getMemberIndexByLoginId(loginId);
-		
-		// -1 = 0 = '없다'의 의미
-		if (index == -1) {
-			return true;
-		}		
-		return false;
-	}
-
-	/* 로그인 아이디 인덱스 중복체크 */
-	private int getMemberIndexByLoginId(String loginId) {
-		
-		int i = 0;
-		
-		for (Member member : members) {
-			if (member.loginId.equals(loginId)) {
-				return i;
-			}
-			i++;
-		}
-		return -1;
-	}
-	
 	/* Article ArrayList 순회 로직 중복제거 (detail, modify) */
 	private Article getArticleById(int id) {
 
@@ -292,7 +217,7 @@ public class App {
 
 	/* Article ArrayList 순회 로직 중복제거 (delete) */
 	private int getArticleIndexById(int id) {
-		
+
 		int i = 0;
 
 		for (Article article : articles) {
@@ -303,7 +228,6 @@ public class App {
 		}
 		return -1;
 	}
-
 
 	/* 테스트 데이터 생성 */
 	private void makeTestData() {
