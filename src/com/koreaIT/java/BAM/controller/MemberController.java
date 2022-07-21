@@ -1,5 +1,6 @@
 package com.koreaIT.java.BAM.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,6 +12,13 @@ public class MemberController extends Controller {
 	private List<Member> members;
 	private String cmd;
 	private String actionMethodName;
+	
+	public MemberController(Scanner sc) {
+		this.sc = sc;
+		members = new ArrayList<>();
+
+	}
+
 
 	public void doAction(String cmd, String actionMethodName) {
 		this.cmd = cmd;
@@ -20,17 +28,15 @@ public class MemberController extends Controller {
 		case "join" : // 작성
 			doJoin();
 			break;
+		default :
+			System.out.println("!!! 존재하지 않는 명령어입니다 !!!");
+			break;
 		}
 
 	}
 
-	public MemberController(Scanner sc, List<Member> members) {
-		this.sc = sc;
-		this.members = members;
 
-	}
-
-	public void doJoin() {
+	private void doJoin() {
 
 		int id = members.size() + 1;
 		String regDate = Util.getNowDateStr();
@@ -112,5 +118,11 @@ public class MemberController extends Controller {
 		}
 		return -1;
 	}
+	
+	/* 회원가입 테스트 데이터 생성 */
+	public void makeTestJoinData() {
+		
+	}
+	
 
 }

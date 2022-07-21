@@ -13,6 +13,12 @@ public class ArticleController extends Controller {
 	private String cmd;
 	private String actionMethodName;
 	
+	public ArticleController(Scanner sc) {
+		this.sc = sc;
+		articles = new ArrayList<>();
+	}
+
+	
 	public void doAction(String cmd, String actionMethodName) {
 		this.cmd = cmd;
 		this.actionMethodName = actionMethodName;
@@ -33,19 +39,17 @@ public class ArticleController extends Controller {
 			case "delete" :				// 삭제
 				doDelete();
 				break;
+			default :
+				System.out.println("!!! 존재하지 않는 명령어입니다 !!!");
+				break;
 				
 		}
-	}
-	
-	public ArticleController(Scanner sc, List<Article> articles) {
-		this.sc = sc;
-		this.articles = articles;
 	}
 
 	
 
 	/* 게시글 작성 */
-	public void doWrite() {
+	private void doWrite() {
 
 		int id = articles.size() + 1;
 
@@ -64,7 +68,7 @@ public class ArticleController extends Controller {
 	}
 
 	/* 게시글 목록 */
-	public void viewList() {
+	private void viewList() {
 		if (articles.size() == 0) {
 			// 게시글 없을 경우
 			System.out.println("게시글이 없습니다. :(");
@@ -101,7 +105,7 @@ public class ArticleController extends Controller {
 	}
 
 	/* 게시글 상세보기 */
-	public void viewDetail() {
+	private void viewDetail() {
 
 		String[] cmdBits = cmd.split(" ");
 //			 cmdBits[0]; -> article
@@ -131,7 +135,7 @@ public class ArticleController extends Controller {
 	}
 
 	/* 게시글 수정 */
-	public void doModify() {
+	private void doModify() {
 
 		String[] cmdBits = cmd.split(" ");
 
@@ -165,7 +169,7 @@ public class ArticleController extends Controller {
 	}
 
 	/* 게시글 삭제 */
-	public void doDelete() {
+	private void doDelete() {
 
 		String[] cmdBits = cmd.split(" ");
 
@@ -216,4 +220,17 @@ public class ArticleController extends Controller {
 		return -1;
 	}
 
+	/* 글쓰기 테스트 데이터 생성 */
+	public void makeTestData() {
+
+		System.out.println("테스트를 위한 데이터를 생성합니다.");
+
+		articles.add(new Article(1, Util.getNowDateStr(), "제목1", "내용1", 11));
+		articles.add(new Article(2, Util.getNowDateStr(), "제목2", "내용2", 22));
+		articles.add(new Article(3, Util.getNowDateStr(), "제목2", "내용2", 33));
+	}
+	
+	
 }
+
+
