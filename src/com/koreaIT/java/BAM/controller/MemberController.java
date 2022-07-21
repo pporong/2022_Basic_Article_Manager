@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.util.Util;
 
@@ -120,9 +121,13 @@ public class MemberController extends Controller {
 	}
 	
 	/* 회원가입 테스트 데이터 생성 */
-	public void makeTestJoinData() {
-		
-	}
-	
+//	public void makeTestJoinData() {
+//		System.out.println("테스트를 위한 데이터를 생성합니다.");
+//
+//		members.add(new Member(1, Util.getNowDateStr(), "제목1", "내용1", 11));
+//		members.add(new Member(2, Util.getNowDateStr(), "제목2", "내용2", 22));
+//		members.add(new Member(3, Util.getNowDateStr(), "제목2", "내용2", 33));
+//	}
+//	
 
 }
