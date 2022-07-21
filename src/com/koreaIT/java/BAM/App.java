@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.java.BAM.controller.ArticleController;
+import com.koreaIT.java.BAM.controller.Controller;
 import com.koreaIT.java.BAM.controller.MemberController;
 import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.dto.Member;
@@ -30,9 +31,9 @@ public class App {
 
 		MemberController memberController = new MemberController(sc, members);
 		ArticleController articleController = new ArticleController(sc, articles);
-
+		
 		while (true) {
-
+			
 			System.out.printf("명령어 : ");
 			String cmd = sc.nextLine().trim();
 
@@ -47,54 +48,67 @@ public class App {
 				System.out.println("프로그램을 종료합니다.");
 				break;
 			}
-
-			/* 회원가입시 */
-			if (cmd.equals("member join")) {
-				memberController.doJoin();
-			}
-
-			/* 게시글 작성 메서드 */
-			if (cmd.equals("article write")) {
-				articleController.doWrite();
+			
+			String[] cmdBits = cmd.split(" ");  // article detail
+			
+			if(cmdBits.length == 1) {
+				System.out.println("!! 명령어를 확인 해 주세요 !!");
+				continue;
 			}
 			
+			String controllerName = cmdBits[0]; // article
+//			String actionMethodName = cmdBits[1];     // detail
 			
-			/* 게시글 목록 */
-			else if (cmd.startsWith("article list")) {
-				articleController.viewList(cmd);
+			Controller controller = null;
+			
+			if (controllerName.equals("article")) {
+				controller = articleController;
+			} else if (controllerName.equals("member")) {
+				controller = memberController;
+			} else {
+				System.out.println("!! 존재하지 않는 명령어 입니다. !!");
+				continue;
 			}
 			
-			/* 게시글 상세보기 */
-			else if (cmd.startsWith("article detail ")) {
-				articleController.viewDetail(cmd);
-			}
+			controller.doAction(cmd);
 			
-			/* 게시글 수정 */
-			else if (cmd.startsWith("article modify ")) {
-				articleController.doModify(cmd);
-			}
+//			// Member
+//			/* 회원가입시 */
+//			if (cmd.equals("member join")) {
+//				memberController.doJoin();
+//			}
+//
+//			// Article
+//			/* 게시글 작성 메서드 */
+//			if (cmd.equals("article write")) {
+//				articleController.doWrite();
+//			} /* 게시글 목록 */
+//			else if (cmd.startsWith("article list")) {
+//				articleController.viewList(cmd);
+//			} /* 게시글 상세보기 */
+//			else if (cmd.startsWith("article detail ")) {
+//				articleController.viewDetail(cmd);
+//			} /* 게시글 수정 */
+//			else if (cmd.startsWith("article modify ")) {
+//				articleController.doModify(cmd);
+//			} /* 게시글 삭제 */
+//			else if (cmd.startsWith("article delete ")) {
+//				articleController.doDelete(cmd);
+//			} 
+//			
+//			// Else
+//			/* 그 외 */
+//			else {
+//				System.out.println("!! 존재하지 않는 명령어 입니다. !! \n");
+//			}
 			
-			/* 게시글 삭제 */
-			else if (cmd.startsWith("article delete ")) {
-				articleController.doDelete(cmd);
-			}
-
-			
-			/* 그 외 */
-			else {
-				System.out.println("!! 존재하지 않는 명령어 입니다. !! \n");
-			}
-
 		}
-
 		System.out.println("== 프로그램 종료 ==");
 		sc.close();
 
 	}
 
 	
-
-
 	/* 테스트 데이터 생성 */
 	private void makeTestData() {
 

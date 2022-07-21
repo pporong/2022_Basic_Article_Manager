@@ -7,13 +7,17 @@ import java.util.Scanner;
 import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.util.Util;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 	private Scanner sc;
 	private List<Article> articles;
 
 	public ArticleController(Scanner sc, List<Article> articles) {
 		this.sc = sc;
 		this.articles = articles;
+	}
+
+	public void doAction(String cmd) {
+
 	}
 
 	/* 게시글 작성 */
@@ -159,6 +163,9 @@ public class ArticleController {
 
 	}
 
+	
+//	===============================================================
+	
 	/* Article ArrayList 순회 로직 중복제거 (detail, modify) */
 	private Article getArticleById(int id) {
 
