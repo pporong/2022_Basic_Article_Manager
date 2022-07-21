@@ -10,15 +10,39 @@ import com.koreaIT.java.BAM.util.Util;
 public class ArticleController extends Controller {
 	private Scanner sc;
 	private List<Article> articles;
-
+	private String cmd;
+	private String actionMethodName;
+	
+	public void doAction(String cmd, String actionMethodName) {
+		this.cmd = cmd;
+		this.actionMethodName = actionMethodName;
+		
+		switch (actionMethodName) {
+			case "write" :			    // 작성
+				doWrite();
+				break;
+			case "list" : 				// 목록
+				viewList();
+				break;	
+			case "detail" :				// 상세보기
+				viewDetail();
+				break;
+			case "modify" :				// 수정
+				doModify();
+				break;
+			case "delete" :				// 삭제
+				doDelete();
+				break;
+				
+		}
+	}
+	
 	public ArticleController(Scanner sc, List<Article> articles) {
 		this.sc = sc;
 		this.articles = articles;
 	}
 
-	public void doAction(String cmd) {
-
-	}
+	
 
 	/* 게시글 작성 */
 	public void doWrite() {
@@ -40,7 +64,7 @@ public class ArticleController extends Controller {
 	}
 
 	/* 게시글 목록 */
-	public void viewList(String cmd) {
+	public void viewList() {
 		if (articles.size() == 0) {
 			// 게시글 없을 경우
 			System.out.println("게시글이 없습니다. :(");
@@ -77,7 +101,7 @@ public class ArticleController extends Controller {
 	}
 
 	/* 게시글 상세보기 */
-	public void viewDetail(String cmd) {
+	public void viewDetail() {
 
 		String[] cmdBits = cmd.split(" ");
 //			 cmdBits[0]; -> article
@@ -107,7 +131,7 @@ public class ArticleController extends Controller {
 	}
 
 	/* 게시글 수정 */
-	public void doModify(String cmd) {
+	public void doModify() {
 
 		String[] cmdBits = cmd.split(" ");
 
@@ -141,7 +165,7 @@ public class ArticleController extends Controller {
 	}
 
 	/* 게시글 삭제 */
-	public void doDelete(String cmd) {
+	public void doDelete() {
 
 		String[] cmdBits = cmd.split(" ");
 
@@ -166,6 +190,7 @@ public class ArticleController extends Controller {
 	
 //	===============================================================
 	
+
 	/* Article ArrayList 순회 로직 중복제거 (detail, modify) */
 	private Article getArticleById(int id) {
 

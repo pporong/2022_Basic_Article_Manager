@@ -9,13 +9,24 @@ import com.koreaIT.java.BAM.util.Util;
 public class MemberController extends Controller {
 	private Scanner sc;
 	private List<Member> members;
+	private String cmd;
+	private String actionMethodName;
+
+	public void doAction(String cmd, String actionMethodName) {
+		this.cmd = cmd;
+		this.actionMethodName = actionMethodName;
+
+		switch (actionMethodName) {
+		case "join" : // 작성
+			doJoin();
+			break;
+		}
+
+	}
 
 	public MemberController(Scanner sc, List<Member> members) {
 		this.sc = sc;
 		this.members = members;
-	}
-
-	public void doAction(String cmd) {
 
 	}
 
@@ -75,16 +86,12 @@ public class MemberController extends Controller {
 		System.out.println("환영합니다! " + userName + "님! 회원가입이 완료되었습니다! :) \n");
 	}
 
-	
-	
-	
 //	===============================================================
-			
+	
 	/* 로그인 아이디 중복체크 */
 	private boolean isJoinableLoginId(String loginId) {
 
 		int index = getMemberIndexByLoginId(loginId);
-
 		// -1 = 0 = '없다'의 의미
 		if (index == -1) {
 			return true;

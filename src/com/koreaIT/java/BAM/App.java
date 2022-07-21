@@ -12,7 +12,6 @@ import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.util.Util;
 
 public class App {
-
 	private List<Article> articles;
 	private List<Member> members;
 
@@ -31,9 +30,9 @@ public class App {
 
 		MemberController memberController = new MemberController(sc, members);
 		ArticleController articleController = new ArticleController(sc, articles);
-		
+
 		while (true) {
-			
+
 			System.out.printf("명령어 : ");
 			String cmd = sc.nextLine().trim();
 
@@ -48,19 +47,19 @@ public class App {
 				System.out.println("프로그램을 종료합니다.");
 				break;
 			}
-			
-			String[] cmdBits = cmd.split(" ");  // article detail
-			
-			if(cmdBits.length == 1) {
+
+			String[] cmdBits = cmd.split(" "); // article detail
+
+			if (cmdBits.length == 1) {
 				System.out.println("!! 명령어를 확인 해 주세요 !!");
 				continue;
 			}
-			
+
 			String controllerName = cmdBits[0]; // article
-//			String actionMethodName = cmdBits[1];     // detail
-			
+			String actionMethodName = cmdBits[1]; // detail
+
 			Controller controller = null;
-			
+
 			if (controllerName.equals("article")) {
 				controller = articleController;
 			} else if (controllerName.equals("member")) {
@@ -69,9 +68,8 @@ public class App {
 				System.out.println("!! 존재하지 않는 명령어 입니다. !!");
 				continue;
 			}
-			
-			controller.doAction(cmd);
-			
+
+
 //			// Member
 //			/* 회원가입시 */
 //			if (cmd.equals("member join")) {
@@ -101,13 +99,13 @@ public class App {
 //			else {
 //				System.out.println("!! 존재하지 않는 명령어 입니다. !! \n");
 //			}
-			
+			controller.doAction(cmd, actionMethodName);
+
 		}
 		System.out.println("== 프로그램 종료 ==");
 		sc.close();
 
 	}
-
 	
 	/* 테스트 데이터 생성 */
 	private void makeTestData() {
@@ -118,5 +116,5 @@ public class App {
 		articles.add(new Article(2, Util.getNowDateStr(), "제목2", "내용2", 22));
 		articles.add(new Article(3, Util.getNowDateStr(), "제목2", "내용2", 33));
 	}
-
+	
 }
