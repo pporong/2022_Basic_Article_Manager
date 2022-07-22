@@ -23,6 +23,7 @@ public class App {
 		MemberController memberController = new MemberController(sc);
 		ArticleController articleController = new ArticleController(sc);
 		
+		// 테스트 데이터
 		memberController.makeTestData();
 		articleController.makeTestData();
 		

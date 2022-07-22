@@ -26,18 +26,19 @@ public class MemberController extends Controller {
 		this.actionMethodName = actionMethodName;
 
 		switch (actionMethodName) {
-		case "join" : // 회원가입
+		case "join": // 회원가입
 			doJoin();
 			break;
-		case "login" : // 로그인
+		case "login": // 로그인
 			doLogin();
 			break;
-//		case "logout" : // 로그아웃
-//			doLogout();
-//			break;
-		case "profile" : // 프로파일
+		case "profile": // 프로필
 			showProfile();
-		default :
+			break;
+		case "logout": // 로그아웃
+			doLogout();
+			break;
+		default:
 			System.out.println("!!! 존재하지 않는 명령어입니다 !!!");
 			break;
 		}
@@ -101,48 +102,63 @@ public class MemberController extends Controller {
 
 	/* 로그인 */
 	private void doLogin() {
+		
+		// 이미 로그인 중
+		if (isLogined()) {
+			System.out.println(loginedMember.loginId + " 님! 이미 로그인 상태입니다 !");
+			return;
+		}
+		
 		System.out.println("< 로그인 >");
 		System.out.printf("★ 아이디 : ");
 		String loginId = sc.nextLine().trim();
 		System.out.printf("★ 비밀번호 : ");
 		String loginPw = sc.nextLine().trim();
-		
+
 		Member member = getMemberByLoginId(loginId);
+		
 
 		// 사용자에게 입력받은 아이디에 해당하는 회원이 존재하는지?
 		if (member == null) {
 			System.out.println("!! 존재하지 않는 아이디입니다. !!");
 			return;
-		} 
+		}
 		// 비밀번호 일치 X
 		if (member.loginPw.equals(loginPw) == false) {
 			System.out.println("!! 비밀번호가 올바르지 않습니다. !!");
 			return;
 		}
-		
+
 		loginedMember = member;
 		System.out.println("반갑습니다 ! " + loginedMember.userName + "님 !");
 //		System.out.printf("%s님! 환영합니다 ! \n", loginId);
 	}
-	
-//	/* 로그아웃 */
-//	private void doLogout() {
-//		
-//	}
 
-	
-	
-	/* 멤버 프로필 */
+	/* 현재 유저 프로필 */
 	private void showProfile() {
-		if(members.size() == 0) {
-			System.out.println("가입된 회원이 존재하지 않습니다.");
+		if (loginedMember == null) {
+			System.out.println("!! 로그인 후 확인 할 수 있습니다 !!");
+		} else {
+			System.out.println("== 현재 로그인 회원 정보 ==");
+			System.out.println("* ID : " + loginedMember.loginId);
+			System.out.println("* NAME : " + loginedMember.userName);
+		}
+		return;
+	}
+
+	/* 로그아웃 */
+	private void doLogout() {
+
+		if(isLogined() == false) {
+			System.out.println("!! 로그인 상태가 아닙니다 !!");
 			return;
 		}
-		System.out.println("user 1 ID: " + loginedMember.loginId);
-		System.out.println("user 1 NAME : " + loginedMember.userName);
+		
+		loginedMember = null;
+		System.out.println("로그아웃 되었습니다. 또 오세요!");
+
 	}
-	
-	
+
 //	===============================================================
 
 	/* 회원가입 아이디 중복체크 */
@@ -170,7 +186,7 @@ public class MemberController extends Controller {
 		return -1;
 	}
 
-	/* 로그인 아이디 존재여부 */
+	/* 회원 아이디 가입 존재여부 */
 	private Member getMemberByLoginId(String loginId) {
 
 		int index = getMemberIndexByLoginId(loginId);
@@ -182,13 +198,18 @@ public class MemberController extends Controller {
 		return members.get(index);
 	}
 
+	/* 로그인 여부 => O */
+	private boolean isLogined() {
+		return loginedMember != null;
+	}
+
 	/* 회원가입 테스트 데이터 생성 */
 	public void makeTestData() {
 		System.out.println("Start for Test to Member data");
-		
+
 		members.add(new Member(1, Util.getNowDateStr(), "짱구", "id1", "pw1"));
 		members.add(new Member(2, Util.getNowDateStr(), "철수", "id2", "pw2"));
-		members.add(new Member(3, Util.getNowDateStr(), "맹구", "id3", "pw3"));
+		members.add(new Member(3, Util.getNowDateStr(), "유리", "id3", "pw3"));
 	}
-	
+
 }
