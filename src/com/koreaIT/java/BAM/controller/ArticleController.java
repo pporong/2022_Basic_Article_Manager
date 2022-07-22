@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.util.Util;
 
@@ -45,8 +46,6 @@ public class ArticleController extends Controller {
 				
 		}
 	}
-
-	
 
 	/* 게시글 작성 */
 	private void doWrite() {
@@ -223,7 +222,7 @@ public class ArticleController extends Controller {
 	/* 글쓰기 테스트 데이터 생성 */
 	public void makeTestData() {
 
-		System.out.println("테스트를 위한 데이터를 생성합니다.");
+		System.out.println("Start for Test to Article data");
 
 		articles.add(new Article(1, Util.getNowDateStr(), "제목1", "내용1", 11));
 		articles.add(new Article(2, Util.getNowDateStr(), "제목2", "내용2", 22));
