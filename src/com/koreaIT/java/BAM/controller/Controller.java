@@ -2,9 +2,9 @@ package com.koreaIT.java.BAM.controller;
 
 public abstract class Controller {
 
+//	public static Member loginedMember;
+	
 	public abstract void doAction(String cmd, String actionMethodName);
 
-	public void makeTestData() {
-		
-	}
+	public abstract void makeTestData();
 }

@@ -35,13 +35,14 @@ public class MemberController extends Controller {
 //		case "logout" : // 로그아웃
 //			doLogout();
 //			break;
+		case "profile" : // 프로파일
+			showProfile();
 		default :
 			System.out.println("!!! 존재하지 않는 명령어입니다 !!!");
 			break;
 		}
 
 	}
-
 
 	/* 회원가입 */
 	private void doJoin() {
@@ -129,7 +130,19 @@ public class MemberController extends Controller {
 //		
 //	}
 
-
+	
+	
+	/* 멤버 프로필 */
+	private void showProfile() {
+		if(members.size() == 0) {
+			System.out.println("가입된 회원이 존재하지 않습니다.");
+			return;
+		}
+		System.out.println("user 1 ID: " + loginedMember.loginId);
+		System.out.println("user 1 NAME : " + loginedMember.userName);
+	}
+	
+	
 //	===============================================================
 
 	/* 회원가입 아이디 중복체크 */
@@ -173,9 +186,9 @@ public class MemberController extends Controller {
 	public void makeTestData() {
 		System.out.println("Start for Test to Member data");
 		
-		members.add(new Member(1, Util.getNowDateStr(), "관리자", "iddd", "pw"));
-		members.add(new Member(2, Util.getNowDateStr(), "유저1", "idd1", "pw1"));
-		members.add(new Member(3, Util.getNowDateStr(), "유저2", "idd2", "pw2"));
+		members.add(new Member(1, Util.getNowDateStr(), "짱구", "id1", "pw1"));
+		members.add(new Member(2, Util.getNowDateStr(), "철수", "id2", "pw2"));
+		members.add(new Member(3, Util.getNowDateStr(), "맹구", "id3", "pw3"));
 	}
 	
 }
