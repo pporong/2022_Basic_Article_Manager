@@ -35,6 +35,10 @@ public class ArticleController extends Controller {
 			viewList();
 			break;
 		case "detail": // 상세보기
+			if (isLogined() == false) {
+				System.out.println("!! 로그인 후 이용 할 수 있습니다 !!");
+				break;
+			}
 			viewDetail();
 			break;
 		case "modify": // 수정
@@ -102,7 +106,8 @@ public class ArticleController extends Controller {
 		// 역순으로 정렬
 		for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
 			Article article = forPrintArticles.get(i);
-			System.out.printf("    %d번   |  %d  |   %s   |  %s | %d \n", article.id, article.memberId, article.title, article.regDate, article.hit);
+			System.out.printf("    %d번   |  %d  |   %s   |  %s | %d \n", article.id, article.memberId, article.title,
+					article.regDate, article.hit);
 		}
 	}
 
@@ -151,6 +156,12 @@ public class ArticleController extends Controller {
 			return;
 		}
 
+		// 타계정 글 수정 시도 시
+		if (foundArticle.memberId != loginedMember.id) {
+			System.out.println("!! 수정 권한이 없습니다 !!");
+			return;
+		}
+
 		// 수정 할 게시글이 있을 때
 		System.out.printf("[ %d번 게시글에 대한 정보입니다. ] \n", foundArticle.id);
 		System.out.printf("* 현재 %d번 게시글 제목 : %s \n", foundArticle.id, foundArticle.title);
@@ -177,17 +188,23 @@ public class ArticleController extends Controller {
 
 		int id = Integer.parseInt(cmdBits[2]);
 
-		int foundIndex = getArticleIndexById(id);
+		Article foundArticle = getArticleById(id);
 
 		// 삭제 할 게시글이 없을때
-		if (foundIndex == -1) {
+		if (foundArticle == null) {
 			System.out.printf("%d번 게시글은 존재하지 않습니다. :( \n", id);
 			System.out.println("다시 한 번 확인해 주세요.");
 			return;
 		}
 
+		// 타계정 글 삭제 시도시
+		if (foundArticle.memberId != loginedMember.id) {
+			System.out.println("!! 삭제 권한이 없습니다 !!");
+			return;
+		}
+
 		// 삭제 할 게시글이 있을때
-		articles.remove(foundIndex);
+		articles.remove(foundArticle);
 		System.out.printf("%d번 게시글을 삭제했습니다. :) \n", id);
 		return;
 
@@ -225,9 +242,10 @@ public class ArticleController extends Controller {
 
 		System.out.println("Start for Test to Article data");
 
-		articles.add(new Article(1, Util.getNowDateStr(), 1,  "제목1", "내용1", 11));
+//				public Article( id,        regDate,   memberId, title, body, hit)
+		articles.add(new Article(1, Util.getNowDateStr(), 1, "제목1", "내용1", 11));
 		articles.add(new Article(2, Util.getNowDateStr(), 2, "제목2", "내용2", 22));
-		articles.add(new Article(3, Util.getNowDateStr(), 3, "제목2", "내용2", 33));
+		articles.add(new Article(3, Util.getNowDateStr(), 2, "제목2", "내용2", 33));
 	}
 
 }
