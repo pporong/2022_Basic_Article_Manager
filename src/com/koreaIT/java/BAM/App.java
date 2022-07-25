@@ -11,8 +11,6 @@ public class App {
 	public App() {
 		
 	}
-	
-
 
 	public void run() {
 
@@ -43,15 +41,15 @@ public class App {
 				break;
 			}
 
-			String[] cmdBits = cmd.split(" "); // article detail
+			String[] cmdBits = cmd.split(" ");
 
 			if (cmdBits.length == 1) {
 				System.out.println("!! 명령어를 확인 해 주세요 !!");
 				continue;
 			}
 
-			String controllerName = cmdBits[0]; // article
-			String actionMethodName = cmdBits[1]; // detail
+			String controllerName = cmdBits[0];
+			String actionMethodName = cmdBits[1];
 
 			Controller controller = null;
 
@@ -63,8 +61,7 @@ public class App {
 				System.out.println("!! 존재하지 않는 명령어 입니다. !!");
 				continue;
 			}
-
-
+			
 			controller.doAction(cmd, actionMethodName);
 
 		}

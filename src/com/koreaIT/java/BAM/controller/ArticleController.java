@@ -157,7 +157,10 @@ public class ArticleController extends Controller {
 		}
 
 		// 타계정 글 수정 시도 시
-		if (foundArticle.memberId != loginedMember.id) {
+		if (isLogined() == false) {
+			System.out.println("!! 로그인 후 이용 해 주세요 !!");
+			return;
+		} else if (foundArticle.memberId != loginedMember.id ) {
 			System.out.println("!! 수정 권한이 없습니다 !!");
 			return;
 		}
@@ -198,7 +201,10 @@ public class ArticleController extends Controller {
 		}
 
 		// 타계정 글 삭제 시도시
-		if (foundArticle.memberId != loginedMember.id) {
+		if (isLogined() == false) {
+			System.out.println("!! 로그인 후 이용 해 주세요 !!");
+			return;
+		} else if (foundArticle.memberId != loginedMember.id) {
 			System.out.println("!! 삭제 권한이 없습니다 !!");
 			return;
 		}

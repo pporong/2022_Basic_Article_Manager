@@ -152,7 +152,6 @@ public class MemberController extends Controller {
 			System.out.println("!! 로그인 상태가 아닙니다 !!");
 			return;
 		}
-		
 		loginedMember = null;
 		System.out.println("로그아웃 되었습니다. 또 오세요!");
 
