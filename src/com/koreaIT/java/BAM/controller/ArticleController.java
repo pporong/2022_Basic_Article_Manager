@@ -62,7 +62,7 @@ public class ArticleController extends Controller {
 		System.out.printf("내용 : ");
 		String body = sc.nextLine();
 
-		Article article = new Article(id, regDate, title, body);
+		Article article = new Article(id, regDate, loginedMember.id, title, body);
 		articles.add(article);
 
 		System.out.printf("%d번 글이 등록되었습니다. :)\n", id);
@@ -98,17 +98,16 @@ public class ArticleController extends Controller {
 			}
 		}
 
-		System.out.println("* 번호  | 조회수 |        작성일         |  제목  *");
+		System.out.println(" *  번호  | 작성자 |   제목   |         작성일          | 조회수 *");
 		// 역순으로 정렬
 		for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
 			Article article = forPrintArticles.get(i);
-			System.out.printf("  %d번  |  %d  | %s | %s \n", article.id, article.hit, article.regDate, article.title);
+			System.out.printf("    %d번   |  %d  |   %s   |  %s | %d \n", article.id, article.memberId, article.title, article.regDate, article.hit);
 		}
 	}
 
 	/* 게시글 상세보기 */
 	private void viewDetail() {
-
 		String[] cmdBits = cmd.split(" ");
 //			 cmdBits[0]; -> article
 //			 cmdBits[1]; -> detail
@@ -129,6 +128,7 @@ public class ArticleController extends Controller {
 		// 상세보기 할 게시글이 있을 때
 		System.out.printf("[ %d번 게시글에 대한 정보입니다. ]\n", foundArticle.id);
 		System.out.printf("* 번호 : %d번 \n", foundArticle.id);
+		System.out.printf("* 작성자 : %d번 \n", foundArticle.memberId);
 		System.out.printf("* 조회 : %d번 \n", foundArticle.hit);
 		System.out.printf("* 날짜 : %s \n", foundArticle.regDate);
 		System.out.printf("* 제목 : %s \n", foundArticle.title);
@@ -225,9 +225,9 @@ public class ArticleController extends Controller {
 
 		System.out.println("Start for Test to Article data");
 
-		articles.add(new Article(1, Util.getNowDateStr(), "제목1", "내용1", 11));
-		articles.add(new Article(2, Util.getNowDateStr(), "제목2", "내용2", 22));
-		articles.add(new Article(3, Util.getNowDateStr(), "제목2", "내용2", 33));
+		articles.add(new Article(1, Util.getNowDateStr(), 1,  "제목1", "내용1", 11));
+		articles.add(new Article(2, Util.getNowDateStr(), 2, "제목2", "내용2", 22));
+		articles.add(new Article(3, Util.getNowDateStr(), 3, "제목2", "내용2", 33));
 	}
 
 }
