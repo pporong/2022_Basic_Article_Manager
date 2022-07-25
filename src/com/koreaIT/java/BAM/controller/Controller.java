@@ -1,10 +1,18 @@
 package com.koreaIT.java.BAM.controller;
 
-public abstract class Controller {
+import com.koreaIT.java.BAM.dto.Member;
 
-//	public static Member loginedMember;
+public abstract class Controller {
+		
+	public static Member loginedMember;
 	
 	public abstract void doAction(String cmd, String actionMethodName);
 
 	public abstract void makeTestData();
+	
+	/* 로그인 여부 => O */
+	public static boolean isLogined() {
+		return loginedMember != null;
+	}
+	
 }

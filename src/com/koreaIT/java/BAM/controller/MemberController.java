@@ -13,7 +13,6 @@ public class MemberController extends Controller {
 	private List<Member> members;
 	private String cmd;
 	private String actionMethodName;
-	private Member loginedMember;
 
 	public MemberController(Scanner sc) {
 		this.sc = sc;
@@ -197,12 +196,7 @@ public class MemberController extends Controller {
 
 		return members.get(index);
 	}
-
-	/* 로그인 여부 => O */
-	private boolean isLogined() {
-		return loginedMember != null;
-	}
-
+	
 	/* 회원가입 테스트 데이터 생성 */
 	public void makeTestData() {
 		System.out.println("Start for Test to Member data");

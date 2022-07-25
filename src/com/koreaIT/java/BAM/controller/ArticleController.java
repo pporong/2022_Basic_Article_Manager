@@ -13,37 +13,40 @@ public class ArticleController extends Controller {
 	private List<Article> articles;
 	private String cmd;
 	private String actionMethodName;
-	
+
 	public ArticleController(Scanner sc) {
 		this.sc = sc;
 		articles = new ArrayList<>();
 	}
 
-	
 	public void doAction(String cmd, String actionMethodName) {
 		this.cmd = cmd;
 		this.actionMethodName = actionMethodName;
-		
+
 		switch (actionMethodName) {
-			case "write" :			    // 작성
-				doWrite();
+		case "write": // 작성
+			if (isLogined() == false) {
+				System.out.println("!! 로그인 후 이용 할 수 있습니다 !!");
 				break;
-			case "list" : 				// 목록
-				viewList();
-				break;	
-			case "detail" :				// 상세보기
-				viewDetail();
-				break;
-			case "modify" :				// 수정
-				doModify();
-				break;
-			case "delete" :				// 삭제
-				doDelete();
-				break;
-			default :
-				System.out.println("!!! 존재하지 않는 명령어입니다 !!!");
-				break;
-				
+			}
+			doWrite();
+			break;
+		case "list": // 목록
+			viewList();
+			break;
+		case "detail": // 상세보기
+			viewDetail();
+			break;
+		case "modify": // 수정
+			doModify();
+			break;
+		case "delete": // 삭제
+			doDelete();
+			break;
+		default:
+			System.out.println("!!! 존재하지 않는 명령어입니다 !!!");
+			break;
+
 		}
 	}
 
@@ -190,9 +193,7 @@ public class ArticleController extends Controller {
 
 	}
 
-	
 //	===============================================================
-	
 
 	/* Article ArrayList 순회 로직 중복제거 (detail, modify) */
 	private Article getArticleById(int id) {
@@ -228,8 +229,5 @@ public class ArticleController extends Controller {
 		articles.add(new Article(2, Util.getNowDateStr(), "제목2", "내용2", 22));
 		articles.add(new Article(3, Util.getNowDateStr(), "제목2", "내용2", 33));
 	}
-	
-	
+
 }
-
-
