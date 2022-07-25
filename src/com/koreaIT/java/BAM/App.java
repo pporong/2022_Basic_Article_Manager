@@ -62,6 +62,41 @@ public class App {
 				continue;
 			}
 			
+			// filter (login check)
+			String actionName = controllerName + "/" + actionMethodName;
+			switch (actionName) {
+			case "article/write" :
+				if (Controller.isLogined() == false) {
+					System.out.println("!! 로그인 후 이용 할 수 있습니다 !!");
+					continue;
+				}
+			case "article/modify" :
+			case "article/delete" :
+			case "article/detail" :
+				if (Controller.isLogined() == false) {
+					System.out.println("!! 로그인 후 이용 할 수 있습니다 !!");
+					continue;
+				}
+			case "member/logout" :	
+			case "member/profile" :	
+				if (Controller.isLogined() == false) {
+					System.out.println("!! 로그인 후 이용 해 주세요 !!");
+					continue;
+				}
+				break;
+			}
+			
+			// filter (logout check)
+			switch (actionName) {
+			case "member/join" :
+			case "member/login" :
+				if (Controller.isLogined()) {
+					System.out.println("!! 로그아웃 후 이용 해 주세요 !!");
+					continue;
+				}
+				break;
+			}
+			
 			controller.doAction(cmd, actionMethodName);
 
 		}

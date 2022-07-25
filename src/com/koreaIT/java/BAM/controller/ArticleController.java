@@ -25,20 +25,12 @@ public class ArticleController extends Controller {
 
 		switch (actionMethodName) {
 		case "write": // 작성
-			if (isLogined() == false) {
-				System.out.println("!! 로그인 후 이용 할 수 있습니다 !!");
-				break;
-			}
 			doWrite();
 			break;
 		case "list": // 목록
 			viewList();
 			break;
 		case "detail": // 상세보기
-			if (isLogined() == false) {
-				System.out.println("!! 로그인 후 이용 할 수 있습니다 !!");
-				break;
-			}
 			viewDetail();
 			break;
 		case "modify": // 수정
