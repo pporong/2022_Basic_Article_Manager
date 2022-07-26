@@ -92,7 +92,7 @@ public class App {
 			case "member/join" :
 			case "member/login" :
 				if (Controller.isLogined()) {
-					System.out.println("! 이미 로그인 상태입니다 !");
+					System.out.println(Controller.loginedMember.loginId + " 님! 이미 로그인 상태입니다 !");
 					continue;
 				}
 				break;
