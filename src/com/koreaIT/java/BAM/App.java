@@ -1,5 +1,6 @@
 package com.koreaIT.java.BAM;
 
+import java.lang.reflect.Member;
 import java.util.Scanner;
 
 import com.koreaIT.java.BAM.controller.ArticleController;
@@ -66,18 +67,18 @@ public class App {
 			String actionName = controllerName + "/" + actionMethodName;
 			switch (actionName) {
 			case "article/write" :
-				if (Controller.isLogined() == false) {
-					System.out.println("!! 로그인 후 이용 할 수 있습니다 !!");
-					continue;
-				}
 			case "article/modify" :
 			case "article/delete" :
 			case "article/detail" :
 				if (Controller.isLogined() == false) {
-					System.out.println("!! 로그인 후 이용 할 수 있습니다 !!");
+					System.out.println("!! 로그인 후 이용 해 주세요 !!");
 					continue;
 				}
 			case "member/logout" :	
+				if(Controller.isLogined() == false) {
+					System.out.println("!! 로그인 상태가 아닙니다 !!");
+					continue;
+				}
 			case "member/profile" :	
 				if (Controller.isLogined() == false) {
 					System.out.println("!! 로그인 후 이용 해 주세요 !!");
@@ -91,7 +92,7 @@ public class App {
 			case "member/join" :
 			case "member/login" :
 				if (Controller.isLogined()) {
-					System.out.println("!! 로그아웃 후 이용 해 주세요 !!");
+					System.out.println("! 이미 로그인 상태입니다 !");
 					continue;
 				}
 				break;
