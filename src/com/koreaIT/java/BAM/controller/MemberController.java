@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import com.koreaIT.java.BAM.container.Container;
 import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.util.Util;
@@ -16,7 +17,8 @@ public class MemberController extends Controller {
 
 	public MemberController(Scanner sc) {
 		this.sc = sc;
-		members = new ArrayList<>();
+		
+		members = Container.memberDao.members;
 
 	}
 
@@ -198,9 +200,10 @@ public class MemberController extends Controller {
 	public void makeTestData() {
 		System.out.println("Start for Test to Member data");
 
-		members.add(new Member(1, Util.getNowDateStr(), "짱구", "id1", "pw1"));
-		members.add(new Member(2, Util.getNowDateStr(), "철수", "id2", "pw2"));
-		members.add(new Member(3, Util.getNowDateStr(), "유리", "id3", "pw3"));
+//		public Member(        id,       regDate,      userName loginId loginPw
+		members.add(new Member(1, Util.getNowDateStr(), "신짱구", "id1", "pw1"));
+		members.add(new Member(2, Util.getNowDateStr(), "남도일", "id2", "pw2"));
+		members.add(new Member(3, Util.getNowDateStr(), "최자두", "id3", "pw3"));
 	}
 
 }
