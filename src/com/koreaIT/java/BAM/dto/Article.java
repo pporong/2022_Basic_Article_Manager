@@ -13,7 +13,6 @@ public class Article extends Dto {
 		this(id, regDate, memberId, title, body, 0);
 	}
 	
-
 	// 인자, 매개변수
 	public Article(int id, String regDate, int memberId, String title, String body, int hit) {
 		this.id = id;

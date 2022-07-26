@@ -60,13 +60,17 @@ public class MemberController extends Controller {
 		while (true) {
 			System.out.printf("* 아이디 : ");
 			loginId = sc.nextLine().trim();
+			// id 미입력시
+			if(loginId == "") {
+				System.out.println("!! ID가 입력 되지 않았습니다 !!");
+				continue;
+			}
 			// 중복 O
 			if (isJoinableLoginId(loginId) == false) {
 				System.out.printf("!! %s (은)는 이미 사용중인 아이디입니다.", loginId);
 				System.out.println(" 다시 입력 해 주세요. !!");
 				continue;
 			}
-
 			// 아이디 조건
 			if (loginId.length() < 3) {
 				System.out.println("!! 아이디는 3글자 이상 입력해야 합니다. !!");
@@ -82,6 +86,11 @@ public class MemberController extends Controller {
 		while (true) {
 			System.out.printf("* 비밀번호 : ");
 			loginPw = sc.nextLine().trim();
+			// 비밀번호 미입력시
+			if(loginPw == "") {
+				System.out.println("!! 비밀번호를 입력 해 주세요 !!");
+				continue;
+			}
 			System.out.printf("* 비밀번호 확인 : ");
 			loginPwConfirm = sc.nextLine().trim();
 			// 일치 X
@@ -96,7 +105,8 @@ public class MemberController extends Controller {
 		members.add(member);
 
 //			System.out.println("환영합니다, " + id + "번 째" + userName +" 회원님 !");
-		System.out.println("환영합니다! " + userName + "님! 회원가입이 완료되었습니다! :) \n");
+		System.out.println("환영합니다! " + userName + "님! 회원가입이 완료되었습니다! :)");
+		System.out.println("[ 아이디 : " + loginId + " / 비밀번호 : " + loginPw + " ]");
 	}
 
 	/* 로그인 */
@@ -107,10 +117,9 @@ public class MemberController extends Controller {
 		String loginId = sc.nextLine().trim();
 		System.out.printf("★ 비밀번호 : ");
 		String loginPw = sc.nextLine().trim();
-
+		
 		Member member = getMemberByLoginId(loginId);
 		
-
 		// 사용자에게 입력받은 아이디에 해당하는 회원이 존재하는지?
 		if (member == null) {
 			System.out.println("!! 존재하지 않는 아이디입니다. !!");

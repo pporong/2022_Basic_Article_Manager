@@ -94,11 +94,12 @@ public class ArticleController extends Controller {
 			}
 		}
 
-		System.out.println(" *  번호  | 작성자 |   제목   |         작성일          | 조회수 *");
+		System.out.println(" *  번호  |  작 성 자  |  제  목  |        작 성 일         | 조회수 *");
 		// 역순으로 정렬
 		for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
 			Article article = forPrintArticles.get(i);
-			System.out.printf("    %d번   |  %d  |   %s   |  %s | %d \n", article.id, article.memberId, article.title,
+			System.out.printf("    %d번   |    %d    |   %s   | %s | %d \n",
+					article.id, article.memberId, article.title,
 					article.regDate, article.hit);
 		}
 	}
@@ -106,10 +107,6 @@ public class ArticleController extends Controller {
 	/* 게시글 상세보기 */
 	private void viewDetail() {
 		String[] cmdBits = cmd.split(" ");
-//			 cmdBits[0]; -> article
-//			 cmdBits[1]; -> detail
-//			 cmdBits[2]; -> ~
-
 		int id = Integer.parseInt(cmdBits[2]);
 
 		Article foundArticle = getArticleById(id);
