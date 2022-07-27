@@ -26,19 +26,19 @@ public class ArticleController extends Controller {
 		this.actionMethodName = actionMethodName;
 
 		switch (actionMethodName) {
-		case "write": // 작성
+		case "write":
 			doWrite();
 			break;
-		case "list": // 목록
+		case "list":
 			viewList();
 			break;
-		case "detail": // 상세보기
+		case "detail":
 			viewDetail();
 			break;
-		case "modify": // 수정
+		case "modify":
 			doModify();
 			break;
-		case "delete": // 삭제
+		case "delete":
 			doDelete();
 			break;
 		default:
@@ -51,7 +51,7 @@ public class ArticleController extends Controller {
 	/* 게시글 작성 */
 	private void doWrite() {
 
-		int id = Container.articleDao.getNewId();
+		int id = Container.articleDao.setNewId();
 
 		System.out.println("< 게시글 작성 >");
 		System.out.printf("제목 : ");
@@ -248,9 +248,9 @@ public class ArticleController extends Controller {
 		System.out.println("Start for Test to Article data");
 
 //								public Article						( id,         regDate,     memberId, title, body, hit)
-		Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
-		Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
-		Container.articleDao.add(new Article(Container.articleDao.getNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 33));
+		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
+		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
+		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 33));
 	}
 
 }
