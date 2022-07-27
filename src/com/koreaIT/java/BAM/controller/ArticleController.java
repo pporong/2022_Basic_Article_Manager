@@ -100,6 +100,7 @@ public class ArticleController extends Controller {
 		System.out.println("*  글번호  |  작 성 자  |  제    목  |       작 성 일       | 조회수 *");
 		// 역순으로 정렬
 		for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
+			
 			Article article = forPrintArticles.get(i);
 			
 			String writerName = null;
@@ -134,11 +135,22 @@ public class ArticleController extends Controller {
 		}
 
 		foundArticle.increaseHit();
-
+		
+		String writerName = null;
+		
+		List<Member> members = Container.memberDao.members;
+		
+		for(Member member : members) {
+			if(foundArticle.memberId == member.id) {
+				writerName = member.userName;
+				break;
+			}
+		}
+		
 		// 상세보기 할 게시글이 있을 때
 		System.out.printf("[ %d번 게시글에 대한 정보입니다. ]\n", foundArticle.id);
 		System.out.printf("* 번호 : %d번 \n", foundArticle.id);
-		System.out.printf("* 작성자 : %d번 \n", foundArticle.memberId);
+		System.out.printf("* 작성자 : %s \n", writerName);
 		System.out.printf("* 조회 : %d번 \n", foundArticle.hit);
 		System.out.printf("* 날짜 : %s \n", foundArticle.regDate);
 		System.out.printf("* 제목 : %s \n", foundArticle.title);
