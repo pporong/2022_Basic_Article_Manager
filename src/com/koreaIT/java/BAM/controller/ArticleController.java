@@ -1,12 +1,12 @@
 package com.koreaIT.java.BAM.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.java.BAM.container.Container;
 import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.dto.Member;
+import com.koreaIT.java.BAM.service.ArticleService;
 import com.koreaIT.java.BAM.util.Util;
 
 public class ArticleController extends Controller {
@@ -14,11 +14,12 @@ public class ArticleController extends Controller {
 	private List<Article> articles;
 	private String cmd;
 	private String actionMethodName;
+	private ArticleService articleService;
 
 	public ArticleController(Scanner sc) {
 		this.sc = sc;
-		
-		articles = Container.articleDao.articles;
+
+		articleService = Container.articleService;
 	}
 
 	public void doAction(String cmd, String actionMethodName) {
@@ -70,53 +71,40 @@ public class ArticleController extends Controller {
 
 	/* 게시글 목록 */
 	private void viewList() {
-		if (articles.size() == 0) {
+
+		// 작성된 게시글 특정 검색
+		String searchKeyword = cmd.substring("article list".length()).trim();
+
+		System.out.printf("검색어 : '%s' (이)가 포함된 결과입니다. \n", searchKeyword);
+
+		List<Article> forPrintArticles = Container.articleService.getForPrintArticles(searchKeyword);
+		
+		if (forPrintArticles.size() == 0) {
 			// 게시글 없을 경우
 			System.out.println("게시글이 없습니다. :(");
 			return;
 		}
-		// 작성된 게시글 특정 검색
-		String searchKeyword = cmd.substring("article list".length()).trim();
-
-		List<Article> forPrintArticles = articles;
-
-		if (searchKeyword.length() > 0) {
-			forPrintArticles = new ArrayList<>();
-
-			System.out.printf("검색어 : '%s' (이)가 포함된 결과입니다. \n", searchKeyword);
-			// 존재 할 때
-			for (Article article : articles) {
-				if (article.title.contains(searchKeyword)) {
-					forPrintArticles.add(article);
-				}
-			}
-			// 존재하지 않는 경우
-			if (forPrintArticles.size() == 0) {
-				System.out.println("해당 검색어를 포함하는 게시글이 없습니다. :( ");
-				return;
-			}
-		}
 
 		System.out.println("*  글번호  |  작 성 자  |  제    목  |       작 성 일       | 조회수 *");
+		
 		// 역순으로 정렬
 		for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
-			
+
 			Article article = forPrintArticles.get(i);
-			
+
 			String writerName = null;
-			
+
 			List<Member> members = Container.memberDao.members;
-			
-			for(Member member : members) {
-				if(article.memberId == member.id) {
-										// 이름이나 loginId 로 해도 됨
+
+			for (Member member : members) {
+				if (article.memberId == member.id) {
+					// 이름이나 loginId 로 해도 됨
 					writerName = member.userName;
 					break;
 				}
 			}
-			
-			System.out.printf("    %d번   |   %s   |   %s   | %s | %d \n",
-					article.id, writerName, article.title,
+
+			System.out.printf("    %d번   |   %s   |   %s   | %s | %d \n", article.id, writerName, article.title,
 					article.regDate, article.hit);
 		}
 	}
@@ -135,18 +123,18 @@ public class ArticleController extends Controller {
 		}
 
 		foundArticle.increaseHit();
-		
+
 		String writerName = null;
-		
+
 		List<Member> members = Container.memberDao.members;
-		
-		for(Member member : members) {
-			if(foundArticle.memberId == member.id) {
+
+		for (Member member : members) {
+			if (foundArticle.memberId == member.id) {
 				writerName = member.userName;
 				break;
 			}
 		}
-		
+
 		// 상세보기 할 게시글이 있을 때
 		System.out.printf("[ %d번 게시글에 대한 정보입니다. ]\n", foundArticle.id);
 		System.out.printf("* 번호 : %d번 \n", foundArticle.id);
@@ -174,7 +162,7 @@ public class ArticleController extends Controller {
 		}
 
 		// 타계정 글 수정 시도 시
-		if (foundArticle.memberId != loginedMember.id ) {
+		if (foundArticle.memberId != loginedMember.id) {
 			System.out.println("!! 수정 권한이 없습니다 !!");
 			return;
 		}
@@ -260,9 +248,12 @@ public class ArticleController extends Controller {
 		System.out.println("Start for Test to Article data");
 
 //								public Article						( id,         regDate,     memberId, title, body, hit)
-		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
-		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
-		Container.articleDao.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 33));
+		Container.articleDao
+				.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
+		Container.articleDao
+				.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
+		Container.articleDao
+				.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 33));
 	}
 
 }

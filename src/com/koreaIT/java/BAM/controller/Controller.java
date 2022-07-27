@@ -15,4 +15,6 @@ public abstract class Controller {
 		return loginedMember != null;
 	}
 	
+	
+	
 }

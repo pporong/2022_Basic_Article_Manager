@@ -164,6 +164,7 @@ public class MemberController extends Controller {
 		}
 
 		loginedMember = member;
+		
 		System.out.println("반갑습니다 ! " + loginedMember.userName + "님 !");
 //		System.out.printf("%s님! 환영합니다 ! \n", loginId);
 	}
