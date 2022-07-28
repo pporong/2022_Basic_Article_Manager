@@ -7,19 +7,21 @@ import com.koreaIT.java.BAM.container.Container;
 import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.service.ArticleService;
+import com.koreaIT.java.BAM.service.MemberService;
 import com.koreaIT.java.BAM.util.Util;
 
 public class ArticleController extends Controller {
 	private Scanner sc;
-//	private List<Article> articles;
 	private String cmd;
 	private String actionMethodName;
 	private ArticleService articleService;
+	private MemberService memberService;
 
 	public ArticleController(Scanner sc) {
 		this.sc = sc;
 
 		articleService = Container.articleService;
+		memberService = Container.memberService;
 	}
 
 	public void doAction(String cmd, String actionMethodName) {
@@ -90,7 +92,7 @@ public class ArticleController extends Controller {
 
 			String writerName = null;
 
-			List<Member> members = Container.memberDao.members;
+			List<Member> members = memberService.getMembers();
 
 			for (Member member : members) {
 				if (article.memberId == member.id) {
@@ -122,7 +124,7 @@ public class ArticleController extends Controller {
 
 		String writerName = null;
 
-		List<Member> members = Container.memberDao.members;
+		List<Member> members = memberService.getMembers();
 
 		for (Member member : members) {
 			if (foundArticle.memberId == member.id) {
@@ -219,9 +221,9 @@ public class ArticleController extends Controller {
 		System.out.println("Start for Test to Article data");
 
 //							      	public Article 	( id,                  regDate,     memberId, title, body, hit)
-		articleService.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
-		articleService.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
-		articleService.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 33));
+		articleService.add(new Article(articleService.setNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
+		articleService.add(new Article(articleService.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
+		articleService.add(new Article(articleService.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 33));
 	}
 
 }

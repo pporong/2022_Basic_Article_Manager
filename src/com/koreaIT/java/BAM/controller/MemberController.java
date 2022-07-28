@@ -1,12 +1,11 @@
 package com.koreaIT.java.BAM.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.java.BAM.container.Container;
-import com.koreaIT.java.BAM.dto.Article;
 import com.koreaIT.java.BAM.dto.Member;
+import com.koreaIT.java.BAM.service.MemberService;
 import com.koreaIT.java.BAM.util.Util;
 
 public class MemberController extends Controller {
@@ -14,12 +13,12 @@ public class MemberController extends Controller {
 	private List<Member> members;
 	private String cmd;
 	private String actionMethodName;
+	private MemberService memberService;
 
 	public MemberController(Scanner sc) {
 		this.sc = sc;
 
-		members = Container.memberDao.members;
-
+		memberService = Container.memberService;
 	}
 
 	public void doAction(String cmd, String actionMethodName) {
@@ -49,7 +48,7 @@ public class MemberController extends Controller {
 	/* 회원가입 */
 	private void doJoin() {
 
-		int id = Container.memberDao.setNewId();
+		int id = memberService.setNewId();
 		String regDate = Util.getNowDateStr();
 
 		System.out.println("< 회원가입 >");
@@ -78,7 +77,7 @@ public class MemberController extends Controller {
 				continue;
 			}
 			// 중복 O
-			if (isJoinableLoginId(loginId) == false) {
+			if (memberService.isJoinableLoginId(loginId) == false) {
 				System.out.printf("!! %s (은)는 이미 사용중인 아이디입니다.", loginId);
 				System.out.println(" 다시 입력 해 주세요. !!");
 				continue;
@@ -114,7 +113,7 @@ public class MemberController extends Controller {
 		}
 
 		Member member = new Member(id, regDate, userName, loginId, loginPw);
-		Container.memberDao.add(member);
+		memberService.add(member);
 
 //			System.out.println("환영합니다, " + id + "번 째" + userName +" 회원님 !");
 		System.out.println("환영합니다! " + userName + "님! 회원가입이 완료되었습니다! :)");
@@ -150,7 +149,7 @@ public class MemberController extends Controller {
 			break;
 		}
 
-		Member member = getMemberByLoginId(loginId);
+		Member member = memberService.getMemberByLoginId(loginId);
 
 		// 사용자에게 입력받은 아이디에 해당하는 회원이 존재하는지?
 		if (member == null) {
@@ -190,51 +189,14 @@ public class MemberController extends Controller {
 
 //	===============================================================
 
-	/* 회원가입 아이디 중복체크 */
-	private boolean isJoinableLoginId(String loginId) {
-
-		int index = getMemberIndexByLoginId(loginId);
-		// -1 = 0 = '없다'의 의미
-		if (index == -1) {
-			return true;
-		}
-		return false;
-	}
-
-	/* 회원가입 아이디 인덱스 중복체크 */
-	private int getMemberIndexByLoginId(String loginId) {
-
-		int i = 0;
-
-		for (Member member : members) {
-			if (member.loginId.equals(loginId)) {
-				return i;
-			}
-			i++;
-		}
-		return -1;
-	}
-
-	/* 회원 아이디 가입 존재여부 */
-	private Member getMemberByLoginId(String loginId) {
-
-		int index = getMemberIndexByLoginId(loginId);
-
-		if (index == -1) {
-			return null;
-		}
-
-		return members.get(index);
-	}
-
 	/* 회원가입 테스트 데이터 생성 */
 	public void makeTestData() {
 		System.out.println("Start for Test to Member data");
 
-//		public Member     			  							( id,            regDate,      userName, loginId, loginPw )
-		Container.memberDao.add(new Member(Container.memberDao.setNewId(), Util.getNowDateStr(), "신짱구", "id1", "pw1"));
-		Container.memberDao.add(new Member(Container.memberDao.setNewId(), Util.getNowDateStr(), "남도일", "id2", "pw2"));
-		Container.memberDao.add(new Member(Container.memberDao.setNewId(), Util.getNowDateStr(), "최자두", "id3", "pw3"));
+//		public Member     						(  id,             regDate,      userName, loginId, loginPw )
+		memberService.add(new Member(memberService.setNewId(), Util.getNowDateStr(), "신짱구", "id1", "pw1"));
+		memberService.add(new Member(memberService.setNewId(), Util.getNowDateStr(), "남도일", "id2", "pw2"));
+		memberService.add(new Member(memberService.setNewId(), Util.getNowDateStr(), "최자두", "id3", "pw3"));
 	}
 
 }
