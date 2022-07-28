@@ -114,24 +114,7 @@ public class ArticleController extends Controller {
 
 		Article foundArticle = articleService.getArticleById(id);
 
-		// 상세보기 할 게시글이 없을 때
-		if (foundArticle == null) {
-			System.out.printf("%d번 게시글은 존재하지 않습니다. :( \n", id);
-			return;
-		}
-
-		foundArticle.increaseHit();
-
-		String writerName = null;
-
-		List<Member> members = memberService.getMembers();
-
-		for (Member member : members) {
-			if (foundArticle.memberId == member.id) {
-				writerName = member.userName;
-				break;
-			}
-		}
+		String writerName = memberService.getMemberNameById(foundArticle.memberId);
 
 		// 상세보기 할 게시글이 있을 때
 		System.out.printf("[ %d번 게시글에 대한 정보입니다. ]\n", foundArticle.id);
@@ -141,7 +124,6 @@ public class ArticleController extends Controller {
 		System.out.printf("* 날짜 : %s \n", foundArticle.regDate);
 		System.out.printf("* 제목 : %s \n", foundArticle.title);
 		System.out.printf("* 내용 : %s \n", foundArticle.body);
-
 	}
 
 	/* 게시글 수정 */

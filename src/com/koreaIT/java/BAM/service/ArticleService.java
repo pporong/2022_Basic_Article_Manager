@@ -7,9 +7,9 @@ import com.koreaIT.java.BAM.dao.ArticleDao;
 import com.koreaIT.java.BAM.dto.Article;
 
 public class ArticleService {
-	
+
 	private ArticleDao articleDao;
-	
+
 	public ArticleService() {
 		this.articleDao = Container.articleDao;
 	}
@@ -22,9 +22,9 @@ public class ArticleService {
 	}
 
 	public int setNewId() {
-		
+
 		int id = articleDao.setNewId();
-		
+
 		return id;
 	}
 
@@ -39,4 +39,9 @@ public class ArticleService {
 	public void remove(Article foundArticle) {
 		articleDao.remove(foundArticle);
 	}
+
+	public List<Article> getForPrintArticles() {
+		return articleDao.getArticles(null);
+	}
+
 }
