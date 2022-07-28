@@ -72,6 +72,7 @@ public class ArticleController extends Controller {
 	/* 게시글 목록 */
 	private void viewList() {
 
+		
 		// 작성된 게시글 특정 검색
 		String searchKeyword = cmd.substring("article list".length()).trim();
 
@@ -86,7 +87,7 @@ public class ArticleController extends Controller {
 		}
 
 		System.out.println("*  글번호  |  작 성 자  |  제    목  |       작 성 일       | 조회수 *");
-		
+
 		// 역순으로 정렬
 		for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
 
