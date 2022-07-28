@@ -11,7 +11,7 @@ import com.koreaIT.java.BAM.util.Util;
 
 public class ArticleController extends Controller {
 	private Scanner sc;
-	private List<Article> articles;
+//	private List<Article> articles;
 	private String cmd;
 	private String actionMethodName;
 	private ArticleService articleService;
@@ -25,7 +25,6 @@ public class ArticleController extends Controller {
 	public void doAction(String cmd, String actionMethodName) {
 		this.cmd = cmd;
 		this.actionMethodName = actionMethodName;
-
 		switch (actionMethodName) {
 		case "write":
 			doWrite();
@@ -45,14 +44,13 @@ public class ArticleController extends Controller {
 		default:
 			System.out.println("!!! 존재하지 않는 명령어입니다 !!!");
 			break;
-
 		}
 	}
 
 	/* 게시글 작성 */
 	private void doWrite() {
 
-		int id = Container.articleDao.setNewId();
+		int id = articleService.setNewId();
 
 		System.out.println("< 게시글 작성 >");
 		System.out.printf("제목 : ");
@@ -63,7 +61,7 @@ public class ArticleController extends Controller {
 
 		Article article = new Article(id, regDate, loginedMember.id, title, body);
 
-		Container.articleDao.add(article);
+		articleService.add(article);
 
 		System.out.printf("%d번 글이 등록되었습니다. :)\n", id);
 
@@ -72,14 +70,11 @@ public class ArticleController extends Controller {
 	/* 게시글 목록 */
 	private void viewList() {
 
-		
 		// 작성된 게시글 특정 검색
 		String searchKeyword = cmd.substring("article list".length()).trim();
 
-		System.out.printf("검색어 : '%s' (이)가 포함된 결과입니다. \n", searchKeyword);
+		List<Article> forPrintArticles = articleService.getForPrintArticles(searchKeyword);
 
-		List<Article> forPrintArticles = Container.articleService.getForPrintArticles(searchKeyword);
-		
 		if (forPrintArticles.size() == 0) {
 			// 게시글 없을 경우
 			System.out.println("게시글이 없습니다. :(");
@@ -115,7 +110,7 @@ public class ArticleController extends Controller {
 		String[] cmdBits = cmd.split(" ");
 		int id = Integer.parseInt(cmdBits[2]);
 
-		Article foundArticle = getArticleById(id);
+		Article foundArticle = articleService.getArticleById(id);
 
 		// 상세보기 할 게시글이 없을 때
 		if (foundArticle == null) {
@@ -154,7 +149,7 @@ public class ArticleController extends Controller {
 
 		int id = Integer.parseInt(cmdBits[2]);
 
-		Article foundArticle = getArticleById(id);
+		Article foundArticle = articleService.getArticleById(id);
 
 		// 수정 할 게시글이 없을 때
 		if (foundArticle == null) {
@@ -194,7 +189,7 @@ public class ArticleController extends Controller {
 
 		int id = Integer.parseInt(cmdBits[2]);
 
-		Article foundArticle = getArticleById(id);
+		Article foundArticle = articleService.getArticleById(id);
 
 		// 삭제 할 게시글이 없을때
 		if (foundArticle == null) {
@@ -210,7 +205,7 @@ public class ArticleController extends Controller {
 		}
 
 		// 삭제 할 게시글이 있을때
-		articles.remove(foundArticle);
+		articleService.remove(foundArticle);
 		System.out.printf("%d번 게시글을 삭제했습니다. :) \n", id);
 		return;
 
@@ -218,43 +213,15 @@ public class ArticleController extends Controller {
 
 //	===============================================================
 
-	/* Article ArrayList 순회 로직 중복제거 (detail, modify) */
-	private Article getArticleById(int id) {
-
-		int index = getArticleIndexById(id);
-
-		if (index != -1) {
-			return articles.get(index);
-		}
-		return null;
-	}
-
-	/* Article ArrayList 순회 로직 중복제거 (delete) */
-	private int getArticleIndexById(int id) {
-
-		int i = 0;
-
-		for (Article article : articles) {
-			if (article.id == id) {
-				return i;
-			}
-			i++;
-		}
-		return -1;
-	}
-
 	/* 글쓰기 테스트 데이터 생성 */
 	public void makeTestData() {
 
 		System.out.println("Start for Test to Article data");
 
-//								public Article						( id,         regDate,     memberId, title, body, hit)
-		Container.articleDao
-				.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
-		Container.articleDao
-				.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
-		Container.articleDao
-				.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 33));
+//							      	public Article 	( id,                  regDate,     memberId, title, body, hit)
+		articleService.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 1, "제목1", "내용1", 11));
+		articleService.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 22));
+		articleService.add(new Article(Container.articleDao.setNewId(), Util.getNowDateStr(), 2, "제목2", "내용2", 33));
 	}
 
 }

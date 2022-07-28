@@ -149,7 +149,7 @@ public class MemberController extends Controller {
 			}
 			break;
 		}
-		
+
 		Member member = getMemberByLoginId(loginId);
 
 		// 사용자에게 입력받은 아이디에 해당하는 회원이 존재하는지?
@@ -164,7 +164,7 @@ public class MemberController extends Controller {
 		}
 
 		loginedMember = member;
-		
+
 		System.out.println("반갑습니다 ! " + loginedMember.userName + "님 !");
 //		System.out.printf("%s님! 환영합니다 ! \n", loginId);
 	}

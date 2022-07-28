@@ -26,15 +26,46 @@ public class ArticleDao extends Dao {
 
 			if (searchKeyword.length() > 0) {
 
+				System.out.printf("[ 검색어 : '%s' (이)가 포함된 결과입니다. ] \n", searchKeyword);
+
 				for (Article article : articles) {
 					if (article.title.contains(searchKeyword)) {
 						forPrintArticles.add(article);
 					}
 				}
-
 			}
 			return forPrintArticles;
 		}
 		return articles;
+	}
+	
+	/* Article ArrayList 순회 로직 중복제거 (detail, modify) */
+	public Article getArticleById(int id) {
+
+		int index = getArticleIndexById(id);
+
+		if (index != -1) {
+			return articles.get(index);
+		}
+		return null;
+	}
+
+	/* Article ArrayList 순회 로직 중복제거 (delete) */
+	public int getArticleIndexById(int id) {
+
+		int i = 0;
+
+		for (Article article : articles) {
+			if (article.id == id) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+
+	public void remove(Article foundArticle) {
+		articles.remove(foundArticle);
+		
 	}
 }
